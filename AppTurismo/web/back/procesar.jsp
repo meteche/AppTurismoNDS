@@ -21,8 +21,18 @@
             String correo = request.getParameter("correo");
             String password = request.getParameter("password");
             rta = Controlador.validarSesion(correo, password);
+            
+            if (!rta.equals("no existe")) {
+                HttpSession sesion = request.getSession();
+                sesion.setAttribute("correoLogueado", correo);
+            }
             System.out.println(rta);
             out.print(rta);
+        }else{
+            if (request.getParameter("option").equals("cerrarSesion")) {
+                HttpSession sesion = request.getSession();
+                sesion.removeAttribute("correoLogueado");
+            }
         }
     }
     

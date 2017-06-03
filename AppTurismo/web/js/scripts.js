@@ -31,12 +31,17 @@ window.onload = function () {
 function cargarScripts(){
     var inicio = window.location.pathname.indexOf("inicio.jsp");
     var registrarCuenta = window.location.pathname.indexOf("registrar-cuenta.jsp");
+    var municipios = window.location.pathname.indexOf("admin/municipios.jsp");
     if(inicio >= 0){
         cargaScriptsBasicos();
     }else{
         if(registrarCuenta >= 0){
             cargaScriptsBasicos();
             cargaScriptsRegistrarCuenta();
+        }else{
+            if(municipios >= 0){
+                cargaScriptsMunicipios();
+            }
         }
     }
 }
@@ -52,13 +57,13 @@ function cargaScriptsBasicos(){
     btnMLogin.onclick = function(){desplegar('#login2');};
     
     var btnInicio = document.getElementById('logo');
-    btnInicio.onclick = function(){redirigir("index.jsp");};
+    btnInicio.onclick = function(){redirigir("", "index.jsp");};
     
     var btnSMRegistrar = document.getElementById('smRegistrar');
-    btnSMRegistrar.onclick = function(){redirigir("registrar-cuenta.jsp");};
+    btnSMRegistrar.onclick = function(){redirigir("", "registrar-cuenta.jsp");};
     
     var btnMRegistrar = document.getElementById('mRegistrar');
-    btnMRegistrar.onclick = function(){redirigir("registrar-cuenta.jsp");};
+    btnMRegistrar.onclick = function(){redirigir("", "registrar-cuenta.jsp");};
     
     var btnLogin2 = document.getElementById('btn-login2');
     btnLogin2.onclick = function(){login(2);};
@@ -82,6 +87,15 @@ function cargaScriptsRegistrarCuenta(){
     btnBtnRegCuentaE.onclick = function(){registrarCuenta("Empresa");};
 }
 
+function cargaScriptsMunicipios(){
+    
+    var btnInicio = document.getElementById('logo');
+    btnInicio.onclick = function(){redirigir("", "../index.jsp");};
+    
+    var btnLogout = document.getElementById('m-logout');
+    btnLogout.onclick = function(){redirigir("cerrarSesion", "../index.jsp");};
+}
+
 //FIN - carga scripts  del sitio
 
 /*
@@ -92,7 +106,20 @@ function desplegar(div){
     $(div).toggle();
 }
 
-function redirigir(pagina){
+function redirigir(opcion, pagina){
+    if(opcion != ""){
+        if (window.XMLHttpRequest) {  
+        // Navegadores que siguen los estándares
+            xhttp = new XMLHttpRequest();
+        }
+        else if (window.ActiveXObject) {  // Navegadores obsoletos
+            xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xhttp.open("POST", "../back/procesar.jsp", true);
+        xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        var queryString = "option=" + (opcion) + "&nocache=" + Math.random();
+        xhttp.send(queryString);
+    }
     window.location = pagina;
 }
 
@@ -174,7 +201,11 @@ function iniciarSesion(correo, pass){
                     });
                 document.getElementById('msgRespuesta').innerHTML = mensaje;
             }else{
-                alert(mensaje);
+                if(mensaje.indexOf('Administrador')>-1){
+                    redirigir("", "admin/municipios.jsp");
+                }else{
+                    alert(mensaje);
+                }
             }
             $("#msgRespuesta").fadeOut(6000);
             $("html, body").animate({scrollTop:"0px"});
