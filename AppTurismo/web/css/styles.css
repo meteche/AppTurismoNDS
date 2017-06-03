@@ -1,0 +1,347 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 18/05/2017, 09:35:45 AM
+    Author     : Ruben D
+*/
+
+*{
+    margin: 0px;
+    font-family: 'lato', sans-serif;
+    box-sizing: border-box;
+    padding: 0px;
+}
+
+body{
+    overflow-x: hidden;
+}
+
+header{
+    position: absolute;
+    width: 100%;
+    background: rgba(4, 0, 0, 0.42) !important;
+}
+
+.centrar{
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.logo{
+    padding: 3px 3px 3px 50%;
+    width: 212px;
+    margin-left: -90px;
+    float: left
+}
+
+.logo img{
+    height: 60px;
+}
+
+.img-logo:hover{
+    cursor: pointer;
+}
+
+.img-slider img{
+    margin-left: -35%;
+    height: 650px;
+}
+
+.img-fondo img{
+    margin-left: -35%;
+    height: 1050px;
+}
+
+.cuenta{
+    float: right;
+    color: #FFFFFF;
+}
+
+.cuenta ul li{
+    list-style: none;
+    float: left;
+    padding: 25px;
+}
+
+.cuenta ul li:hover{
+    border-bottom: 1px solid;
+    cursor: pointer;
+}
+
+.subM{
+    display: none;
+}
+
+.icon-menu{
+    display: block;
+}
+
+.sub-menu{
+    position: absolute;
+    width: 100%;
+    margin-top: 69px;
+    background: rgba(255, 255, 255, 0.9) !important;
+    display: none;
+}
+
+.sub-menu ul li, .menu-desplegable ul li{
+    padding: 10px; 
+    text-align: center;
+    color: #514c4c;
+}
+
+.sub-menu ul li:hover, .menu-desplegable ul li:hover{
+    color: #0088CC;
+    cursor: pointer;
+}
+
+.login{
+    position: absolute;
+    z-index: 2;
+    width: 100%;
+    padding: 20px 0px;
+    background: #FFFFFF;
+    display: none;
+}
+
+.cont-login{
+    margin-top: 0px !important;
+}
+
+.contenedor-login{
+    width: 90%;
+}
+
+.input{
+    padding: 5px;
+}
+
+.input input,  .input select{
+    width: 100%;
+    padding: 5px;
+}
+
+.btn-primario{
+    background: #e8ad00;
+    border-color: #e8ad00;
+    color: #FFFFFF;
+    font-weight: bolder;
+    letter-spacing: 0.5px;
+}
+
+.btn-primario:hover{
+    background: #FFBF00;
+    border-color: #FFBF00;
+    cursor: pointer;
+}
+
+.btn-secundario{
+    border: 1px solid #FFFFFF;
+    background: rgba(4, 0, 0, 0.42);
+    color: #FFFFFF;
+    font-weight: bolder;
+    letter-spacing: 0.5px;
+}
+
+.btn-secundario:hover{
+    background: #328fd6;
+    cursor: pointer;
+}
+
+.input2{
+    padding: 5px;
+}
+
+.input2 input{
+    width: 70%;
+    padding: 5px;
+}
+
+.margen-top{
+    margin-top: 20px;
+}
+
+.margen-top2{
+    margin-top: 69px;
+}
+.busqueda{
+    position: absolute;
+    z-index: 1;
+    top: 60%;
+    width: 100%;
+    padding-bottom: 20px;
+    background: rgba(4, 0, 0, 0.42) !important;
+}
+
+.busqueda .titulo{
+    color: #FFBF00;
+}
+
+.titulo h1{
+    font-family: Gabriola;
+    font-size: 44px;
+}
+
+.select, .registrar{
+    width: 90%;
+}
+
+.registrar{
+    margin-top: 30%;
+    padding: 20px;
+    text-align: center;
+    background: rgba(4, 0, 0, 0.42) !important;
+}
+
+.registrar .titulo{
+    font-family: Gabriola;
+    font-size: 44px;
+    color: #FFBF00;
+}
+
+.registrar .descripcion{
+    color: #FFFFFF;
+    text-align: justify;
+}
+
+.registrar .btn{
+    padding: 20px 0px;
+}
+
+.form-registro{
+    display: none;
+    border-top: 1px solid #FFFFFF;
+}
+
+.select select{
+    width: 100%;
+    padding: 8px;
+    color: #1c2b36;
+}
+
+.contBusqueda{
+    width: 100%;
+}
+
+.img-fondo{
+    position: absolute;
+    z-index: 0;
+}
+
+.front{
+    position: absolute;
+    z-index: 1;
+}
+
+.contenedorPrincipal{
+    margin-top: 69px;
+    width: 100%;
+}
+
+.menu-desplegable{
+    background: rgba(255, 255, 255, 0.9) !important;
+    display: none;
+}
+
+.msgEmergente{
+    margin: 5px 5px -5px 5px;
+    display: none;
+    padding: 5px;
+    text-align: justify;
+    color: white;
+    font-weight: bold;
+    background: rgba(255, 0, 0, 0.42) !important;
+}
+
+.msgRespuesta{
+    display: none;
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    padding: 15px;
+}
+
+@media screen and (min-width: 480px){
+    .input2 input{
+        width: 45%;
+    }
+    
+    .cont-form-reg{
+        width: 90%;
+    }
+    
+    .img-fondo img{
+        height: 850px;
+    }
+    
+    .registrar{
+        float: left;
+        width: 46%;
+        margin-left: 4%;
+    }
+}
+
+@media screen and (min-width: 767px){
+    .img-slider img, .img-fondo img{
+        margin-left: 0%;
+    }
+    
+    .subM{
+        display: block;
+    }
+    
+    .icon-menu{
+        display: none;
+    }
+    
+    .login{
+        margin-top: 69px;
+        width: 37%;
+        display: block;
+        left: 100%;
+        margin-left: -37%;
+        display: none;
+    }
+    
+    .contBusqueda, .busqueda{
+        width: 80%;
+    }
+}
+
+@media screen and (min-width: 1100px){
+    .img-slider img, .img-fondo img{
+        width: 100%;
+        height: initial;
+    }
+    
+    .registrar{
+        margin-top: 20%;
+        width: 40%;
+        margin-left: 7%;
+    }
+    
+    .login{
+        width: 21%;
+        margin-left: -21%;
+    }
+    
+    .cont-login{
+        width: 21%;
+    }
+    
+    .contBusqueda, .busqueda{
+        width: 60%;
+    }
+    
+    .busqueda{
+        top: 45%;
+    }
+    
+    .cont-form-reg{
+        width: 80%;
+    }
+}
+
