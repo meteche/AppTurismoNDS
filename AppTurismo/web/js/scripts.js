@@ -94,6 +94,15 @@ function cargaScriptsMunicipios(){
     
     var btnLogout = document.getElementById('m-logout');
     btnLogout.onclick = function(){redirigir("cerrarSesion", "../index.jsp");};
+    
+    var btnMostrarMenuLateral = document.getElementById('mostrarMenu');
+    btnMostrarMenuLateral.onclick = function(){desplegar("#contenedor-acciones");desplegar("#acciones");};
+    
+    var btnMenu = document.getElementById('iconMenu');
+    btnMenu.onclick = function(){desplegar('#sub-menu');};
+    
+    var iconLogout = document.getElementById('smLogout');
+    iconLogout.onclick = function(){redirigir("cerrarSesion", "../index.jsp");};
 }
 
 //FIN - carga scripts  del sitio

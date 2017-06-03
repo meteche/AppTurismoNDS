@@ -17,6 +17,7 @@ and open the template in the editor.
 
 body{
     overflow-x: hidden;
+    background: #F2F0F1;
 }
 
 header{
@@ -115,11 +116,16 @@ header{
     width: 90%;
 }
 
+.inputBtn{
+    padding: 5px;
+    width: 80%;
+}
+
 .input{
     padding: 5px;
 }
 
-.input input,  .input select{
+.input input, .inputBtn input, .input select{
     width: 100%;
     padding: 5px;
 }
@@ -146,9 +152,13 @@ header{
     letter-spacing: 0.5px;
 }
 
-.btn-secundario:hover{
+.btn-secundario:hover, .acciones ul li:hover{
     background: #328fd6;
     cursor: pointer;
+}
+
+.itemMenu-seleccionado{
+    background: #328fd6;
 }
 
 .input2{
@@ -264,6 +274,108 @@ header{
     padding: 15px;
 }
 
+.paddingTop1{
+    padding-top: 69px;
+}
+
+.contenedor-acciones, .contenedor, .acciones, .mostrarMenu{
+    float: left;
+}
+
+.contenedor-acciones, .acciones{
+    //height: 1210px;
+    color: #FFFFFF;
+}
+
+.contenedor-acciones{
+    position: absolute;
+}
+
+.acciones{
+    width: 230px;
+    display: none;
+}
+
+.acciones ul{
+    padding-top: 20px;
+}
+
+.acciones ul li{
+    padding: 12px 5px 12px 15px;
+}
+
+.contenedor{
+    width: 100%;
+    padding: 20px;
+}
+
+.mostrarMenu{
+    width: 13px;
+    text-align: center;
+    height: 200px;
+    padding-top: 90px;
+    background: gray;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    font-size: 11px;
+    margin-top: 15%;
+}
+
+.colTransFuerte{
+    background: rgba(4, 0, 0, 0.82) !important;
+}
+
+.muniPrincippal, .muniOpcion{
+    padding: 15px;
+    border-radius: 5px;
+    margin-top: 10px;
+    background: #FFFFFF;
+}
+
+.contenedor-tabla{
+    overflow: auto;
+    white-space: nowrap;
+}
+
+table{
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+table thead tr{
+    background: #328fd6;
+    color: #FFFFFF;
+}
+
+table tr th, table tr td{
+    border-bottom: 1px solid #328fd6;
+    padding: 10px 20px;
+    text-align: center;
+}
+
+.municipio{
+    padding: 5px 20px 5px 5px;
+}
+
+.opciones span{
+    padding: 0px 5px;
+}
+
+.opciones span:hover{
+    cursor: pointer;
+}
+
+legend{
+    padding: 5px;
+    color: #e8ad00;
+    font-weight: bold;
+}
+
+.ocultar{
+    display: none;
+}
+
 @media screen and (min-width: 480px){
     .input2 input{
         width: 45%;
@@ -309,6 +421,27 @@ header{
     .contBusqueda, .busqueda{
         width: 80%;
     }
+    
+    .contenedor-acciones{
+        position: initial;
+        width: 230px;
+    }
+    
+    .acciones{
+        display: block;
+    }
+    
+    .mostrarMenu{
+        display: none;
+    }
+    
+    .contenedor{
+        width: 69%;
+    }
+    
+    .contenedor-acciones, .acciones{
+        height: 600px;
+    }
 }
 
 @media screen and (min-width: 1100px){
@@ -342,6 +475,23 @@ header{
     
     .cont-form-reg{
         width: 80%;
+    }
+    
+    .contenedor{
+        width: 78%
+    }
+    
+    .muniPrincippal, .muniOpcion{
+        float: left;
+        margin: 1%;
+    }
+    
+    .muniPrincippal{
+        width: 56%;
+    }
+    
+    .muniOpcion{
+        width: 40%;
     }
 }
 

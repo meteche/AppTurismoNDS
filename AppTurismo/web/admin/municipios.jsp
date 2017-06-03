@@ -30,7 +30,7 @@
                 response.sendRedirect("../inicio.jsp");
             }
         %>
-        <header class="front">
+        <header class="front colTransFuerte">
             <div class="centrar logo">
                 <img id="logo" class="img-logo" src="../img/logo.png">
             </div>
@@ -41,5 +41,62 @@
                 </ul>
             </div>
         </header>
+        <div class="paddingTop1">
+            <div class="contenedor-acciones ">
+                <div id="acciones" class="acciones colTransFuerte">
+                    <ul>
+                        <li class="itemMenu-seleccionado">Municipios</li>
+                        <li>Sitios Turisticos</li>
+                        <li>Cuentas de acceso</li>
+                        <li>Mi cuenta</li>
+                    </ul>
+                </div>
+                <div id="mostrarMenu" class="mostrarMenu"><span class="icon-caret-right"><br></span><span class="icon-caret-left"></span></div>
+            </div>
+            <div>
+                <div id="sub-menu" class="menu-desplegable">
+                    <ul>
+                        <li id="smLogout">Cerrar Sesión</li>
+                    </ul>
+                </div>
+                <div class="contenedor">
+                    <div class="muniPrincippal">
+                        <div>
+                            <h1>Municipios</h1>
+                        </div>
+                        <div class="contenedor-tabla">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Municipios</th>
+                                        <th>Opciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="municipio">cucuta norte de santander</td>
+                                        <td class="opciones"><span class="icon-edit"></span><span class="icon-trash-o"></span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="muniOpcion">
+                        <div>
+                            <div>
+                                <legend>Municipio</legend>
+                            </div>
+                            <div  class="input">
+                                <input type="text" placeholder="Municipio">
+                            </div>
+                            <div  class="inputBtn centrar">
+                                <input class="btn-primario" type="button" value="Crear">
+                                <input class="btn-primario ocultar" type="button" value="Modificar">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
 </html>

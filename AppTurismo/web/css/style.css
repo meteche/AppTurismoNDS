@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'ruben';
-  src:  url('../fonts/ruben.eot?s87zit');
-  src:  url('../fonts/ruben.eot?s87zit#iefix') format('embedded-opentype'),
-    url('../fonts/ruben.ttf?s87zit') format('truetype'),
-    url('../fonts/ruben.woff?s87zit') format('woff'),
-    url('../fonts/ruben.svg?s87zit#ruben') format('svg');
+  src:  url('../fonts/ruben.eot?hvcvhm');
+  src:  url('../fonts/ruben.eot?hvcvhm#iefix') format('embedded-opentype'),
+    url('../fonts/ruben.ttf?hvcvhm') format('truetype'),
+    url('../fonts/ruben.woff?hvcvhm') format('woff'),
+    url('../fonts/ruben.svg?hvcvhm#ruben') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -24,6 +24,15 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-trash-o:before {
+  content: "\f014";
+}
+.icon-edit:before {
+  content: "\f044";
+}
+.icon-pencil-square-o:before {
+  content: "\f044";
+}
 .icon-bars:before {
   content: "\f0c9";
 }
@@ -32,4 +41,10 @@
 }
 .icon-reorder:before {
   content: "\f0c9";
+}
+.icon-caret-left:before {
+  content: "\f0d9";
+}
+.icon-caret-right:before {
+  content: "\f0da";
 }
