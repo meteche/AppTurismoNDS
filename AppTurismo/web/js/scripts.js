@@ -33,6 +33,7 @@ function cargarScripts(){
     var registrarCuenta = window.location.pathname.indexOf("registrar-cuenta.jsp");
     var municipios = window.location.pathname.indexOf("admin/municipios.jsp");
     var miCuenta = window.location.pathname.indexOf("admin/mi_cuenta.jsp");
+    var cuentasSistema = window.location.pathname.indexOf("admin/cuentas_sistema.jsp");
     
     if(inicio >= 0){
         cargaScriptsBasicos();
@@ -49,6 +50,10 @@ function cargarScripts(){
                 if(miCuenta >= 0){
                     cargaScriptsBasicosLogueado();
                     cargaScriptsMiCuenta();
+                }else{
+                    if(cuentasSistema >= 0){
+                        cargaScriptsBasicosLogueado();
+                    }
                 }
             }
         }
@@ -115,6 +120,9 @@ function cargaScriptsBasicosLogueado(){
     
     var btnMMunicipio = document.getElementById('m-municipio');
     btnMMunicipio.onclick = function(){redirigir("", "municipios.jsp");};
+    
+    var btnMCuentasSistema = document.getElementById('m-cuentasSistema');
+    btnMCuentasSistema.onclick = function(){redirigir("", "cuentas_sistema.jsp");};
     
     var btnMMiCuenta = document.getElementById('m-miCuenta');
     btnMMiCuenta.onclick = function(){redirigir("", "mi_cuenta.jsp");};

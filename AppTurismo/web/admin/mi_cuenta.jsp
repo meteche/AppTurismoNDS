@@ -47,7 +47,7 @@
                     <ul>
                         <li id="m-municipio">Municipios</li>
                         <li>Sitios Turisticos</li>
-                        <li>Cuentas de acceso</li>
+                        <li id="m-cuentasSistema">Cuentas del sistema</li>
                         <li id="m-miCuenta" class="itemMenu-seleccionado">Mi cuenta</li>
                     </ul>
                 </div>

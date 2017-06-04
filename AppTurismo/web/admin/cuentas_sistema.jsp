@@ -1,6 +1,6 @@
 <%-- 
-    Document   : municipios
-    Created on : 2/06/2017, 10:20:01 PM
+    Document   : cuentas_sistema
+    Created on : 4/06/2017, 11:43:35 AM
     Author     : Ruben D
 --%>
 
@@ -45,9 +45,9 @@
             <div class="contenedor-acciones ">
                 <div id="acciones" class="acciones colTransFuerte">
                     <ul>
-                        <li id="m-municipio" class="itemMenu-seleccionado">Municipios</li>
+                        <li id="m-municipio">Municipios</li>
                         <li>Sitios Turisticos</li>
-                        <li id="m-cuentasSistema">Cuentas del sistema</li>
+                        <li id="m-cuentasSistema" class="itemMenu-seleccionado">Cuentas del sistema</li>
                         <li id="m-miCuenta">Mi cuenta</li>
                     </ul>
                 </div>
@@ -63,36 +63,19 @@
                 <div class="contenedor">
                     <div class="muniPrincippal">
                         <div>
-                            <h1>Municipios</h1>
+                            <h1>Cuentas del sistema</h1>
                         </div>
                         <div class="contenedor-tabla">
                             <table id="tabla">
                                 <thead>
                                     <tr>
-                                        <th>Municipios</th>
+                                        <th>Cuenta</th>
+                                        <th>Nombre</th>
+                                        <th>Tipo Cuenta</th>
                                         <th>Opciones</th>
                                     </tr>
                                 </thead>
                             </table>
-                        </div>
-                    </div>
-                    <div class="muniOpcion">
-                        <div>
-                            <div>
-                                <legend>Municipio</legend>
-                            </div>
-                            <div  class="input">
-                                <input id="muni" class="ocultar" type="text">
-                                <input id="municipioVer" class="ocultar" type="text" placeholder="Municipio">
-                            </div>
-                            <p id="msgEmergenteMunicipio" class="msgEmergente"></p>
-                            <div  class="input">
-                                <input id="municipio" type="text" placeholder="Municipio">
-                            </div>
-                            <div  class="inputBtn centrar">
-                                <input id="btn-crearMunicipio" class="btn-primario" type="button" value="Crear">
-                                <input id="btn-modificarMunicipio" class="btn-primario ocultar" type="button" value="Modificar">
-                            </div>
                         </div>
                     </div>
                 </div>
