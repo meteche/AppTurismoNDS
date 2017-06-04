@@ -56,6 +56,19 @@
                                 rta = Controlador.modificarMunicipio(municipioV, municipioM);
                                 System.out.println(rta);
                                 out.print(rta);
+                            }else{
+                                if (request.getParameter("option").equals("modificarCuenta")) {
+                                    String correoV = request.getParameter("correoV");
+                                    String correoM = request.getParameter("correoM");
+                                    String pass = request.getParameter("passM");
+                                    rta = Controlador.modificarCuenta(correoV, correoM, pass);
+                                    if(rta.equals("exito")){
+                                        HttpSession sesion = request.getSession();
+                                        sesion.setAttribute("correoLogueado", correoM);
+                                    }
+                                    System.out.println(rta);
+                                    out.print(rta);
+                                }
                             }
                         }
                     }

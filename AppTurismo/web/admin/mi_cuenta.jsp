@@ -65,18 +65,18 @@
                         <div>
                             <h1>Mi cuenta</h1>
                         </div>
-                        <p id="msgEmergenteMunicipio" class="msgEmergente"></p>
+                        <p id="msgEmergenteCorreo" class="msgEmergente"></p>
                         <div  class="input">
                             <input id="correoVer" type="text" class="ocultar" value=<%='"'+correoL+'"'%>>
                             <input id="correo" type="text" placeholder="Correo" value=<%='"'+correoL+'"'%>>
                         </div>
-                        <p id="msgEmergenteMunicipio" class="msgEmergente"></p>
+                        <p id="msgEmergenteNewPass" class="msgEmergente"></p>
                         <div  class="input">
-                            <input id="newPass" type="text" placeholder="Nueva Contraseña">
+                            <input id="newPass" class="campo" type="password" placeholder="Nueva Contraseña">
                         </div>
-                        <p id="msgEmergenteMunicipio" class="msgEmergente"></p>
+                        <p id="msgEmergenteVerPass" class="msgEmergente"></p>
                         <div  class="input">
-                            <input id="verPass" type="text" placeholder="Verificar Contraseña">
+                            <input id="verPass" class="campo" type="password" placeholder="Verificar Contraseña">
                         </div>
                         <div  class="inputBtn centrar">
                             <input id="btn-guardarCambios" class="btn-primario" type="button" value="Guardar cambios">

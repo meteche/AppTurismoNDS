@@ -48,6 +48,7 @@ function cargarScripts(){
             }else{
                 if(miCuenta >= 0){
                     cargaScriptsBasicosLogueado();
+                    cargaScriptsMiCuenta();
                 }
             }
         }
@@ -126,6 +127,12 @@ function cargaScriptsMunicipios(){
     
     var btnModificarMunicipio = document.getElementById('btn-modificarMunicipio');
     btnModificarMunicipio.onclick = function(){modificarMunicipio();};
+}
+
+function cargaScriptsMiCuenta(){
+    
+    var btnGuardarCambios = document.getElementById('btn-guardarCambios');
+    btnGuardarCambios.onclick = function(){modificarCuenta();};
 }
 
 //FIN - carga scripts  del sitio
@@ -560,4 +567,62 @@ function escucharAccionOpciones(){
         
     });
 }
+
+function modificarCuenta(){
+    
+    var correoVer = document.getElementById("correoVer").value;
+    var correo = document.getElementById("correo").value;
+    var pass = document.getElementById("newPass").value;
+    var passVer = document.getElementById("verPass").value;
+       
+    if(verificarCorreoContraseña(correo, pass, 'msgEmergenteCorreo', 'msgEmergenteNewPass')){
+        if(passVer === ""){
+            document.getElementById("msgEmergenteVerPass").style.display = "block";
+            document.getElementById("msgEmergenteVerPass").innerHTML = "Ingrese una contraseña";
+        }else{
+            if(pass === passVer){
+                document.getElementById("msgEmergenteVerPass").style.display = "none";
+                
+                $("body").css({'cursor':'wait'});
+                if (window.XMLHttpRequest) {  
+                // Navegadores que siguen los estándares
+                    xhttp = new XMLHttpRequest();
+                }
+                else if (window.ActiveXObject) {  // Navegadores obsoletos
+                    xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                xhttp.onreadystatechange = function () {
+                    if (xhttp.readyState == READY_STATE_COMPLETE && xhttp.status == OK) {
+                        var mensaje = xhttp.responseText;
+                        if(mensaje.indexOf('exito')>-1){
+                            window.location = "mi_cuenta.jsp";
+                        }else{
+                            $("#msgRespuesta").css({
+                                    'display':'block',
+                                    'background': '#F2DEDE',
+                                    'color': '#B94A48'
+                                });
+                            if(mensaje.indexOf('Duplicate')>-1){
+                                document.getElementById('msgRespuesta').innerHTML = "El correo ingresado ya existe";
+                            }else{
+                                document.getElementById('msgRespuesta').innerHTML = mensaje;
+                            }
+                        }
+                        $("body").css({'cursor':'default'});
+                        $("#msgRespuesta").fadeOut(6000);
+                        $("html, body").animate({scrollTop:"0px"});
+                    }
+                }
+                xhttp.open("POST", "../back/procesar.jsp", true);
+                xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                var queryString = "correoV=" + (correoVer) + "&correoM=" + (correo) + "&passM=" + (pass) + "&option=" + ("modificarCuenta") + "&nocache=" + Math.random();
+                xhttp.send(queryString);
+                
+            }else{
+                document.getElementById("msgEmergenteVerPass").innerHTML = "La contraseña es diferente";
+            }
+        }
+    }
+}
+
 //FIN - metodos que interactuan con la base de datos

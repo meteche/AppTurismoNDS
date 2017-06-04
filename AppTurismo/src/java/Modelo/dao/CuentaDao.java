@@ -76,4 +76,28 @@ public class CuentaDao {
         }
         return msg;
     }
+    
+    public String modificarCuenta(Cuenta cVer, Cuenta cMod) {
+        String msg = "exito";
+        try {
+            this.ps = this.co.prepareStatement("UPDATE CUENTAS SET correo = ?, contrasena = ? WHERE correo = ?");
+            this.ps.setString(1, cMod.getCorreo());
+            this.ps.setString(2, cMod.getPassword());
+            this.ps.setString(3, cVer.getCorreo());
+
+            this.ps.execute();
+
+        } catch (Exception e) {
+            msg = "ERROR EN EL DAO:: " + e.getMessage();
+            System.out.println("ERROR EN EL DAO:: " + e.getMessage());
+        } finally {
+            try {
+                this.ps.close();
+                this.ps = null;
+            } catch (SQLException ex) {
+                Logger.getLogger(CuentaDao.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return msg;
+    }
 }

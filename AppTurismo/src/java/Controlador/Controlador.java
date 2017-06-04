@@ -98,6 +98,42 @@ public class Controlador {
         return mensaje;
     }
     
+    public String modificarCuenta(String correoVer, String correoMod, String pass) {
+        Cuenta cV = new Cuenta();
+        Cuenta cM = new Cuenta();
+        
+        cV.setCorreo(correoVer);
+        cM.setCorreo(correoMod);
+        cM.setPassword(pass);
+        cM.setTipoCuenta("Administrador");
+        
+        this.conectar();
+        try {
+            this.co.setAutoCommit(false);
+        } catch (SQLException ex) {
+            Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        CuentaDao cd = new CuentaDao(this.co);
+        String mensaje = cd.modificarCuenta(cV, cM);
+
+        if (mensaje.equals("error")) {
+            try {
+                co.rollback();
+                mensaje = "Ha ocurrido un error a la hora de registrar la cuenta.";
+            } catch (SQLException ex) {
+                Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            try {
+                co.commit();
+            } catch (SQLException ex) {
+                Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        this.desconectar();
+        return mensaje;
+    }
+    
     public String agregarMunicipio(String nombreM) {
         Municipio m = new Municipio();
         
