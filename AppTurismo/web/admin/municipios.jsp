@@ -59,25 +59,20 @@
                         <li id="smLogout">Cerrar Sesión</li>
                     </ul>
                 </div>
+                <div id="msgRespuesta" class="msgRespuesta"></div>
                 <div class="contenedor">
                     <div class="muniPrincippal">
                         <div>
                             <h1>Municipios</h1>
                         </div>
                         <div class="contenedor-tabla">
-                            <table>
+                            <table id="tabla">
                                 <thead>
                                     <tr>
                                         <th>Municipios</th>
                                         <th>Opciones</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="municipio">cucuta norte de santander</td>
-                                        <td class="opciones"><span class="icon-edit"></span><span class="icon-trash-o"></span></td>
-                                    </tr>
-                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -87,11 +82,16 @@
                                 <legend>Municipio</legend>
                             </div>
                             <div  class="input">
-                                <input type="text" placeholder="Municipio">
+                                <input id="muni" class="ocultar" type="text">
+                                <input id="municipioVer" class="ocultar" type="text" placeholder="Municipio">
+                            </div>
+                            <p id="msgEmergenteMunicipio" class="msgEmergente"></p>
+                            <div  class="input">
+                                <input id="municipio" type="text" placeholder="Municipio">
                             </div>
                             <div  class="inputBtn centrar">
-                                <input class="btn-primario" type="button" value="Crear">
-                                <input class="btn-primario ocultar" type="button" value="Modificar">
+                                <input id="btn-crearMunicipio" class="btn-primario" type="button" value="Crear">
+                                <input id="btn-modificarMunicipio" class="btn-primario ocultar" type="button" value="Modificar">
                             </div>
                         </div>
                     </div>

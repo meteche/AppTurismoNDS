@@ -40,7 +40,9 @@ function cargarScripts(){
             cargaScriptsRegistrarCuenta();
         }else{
             if(municipios >= 0){
+                cargaScriptsBasicosLogueado();
                 cargaScriptsMunicipios();
+                cargarTablaMunicipios();
             }
         }
     }
@@ -87,7 +89,7 @@ function cargaScriptsRegistrarCuenta(){
     btnBtnRegCuentaE.onclick = function(){registrarCuenta("Empresa");};
 }
 
-function cargaScriptsMunicipios(){
+function cargaScriptsBasicosLogueado(){
     
     var btnInicio = document.getElementById('logo');
     btnInicio.onclick = function(){redirigir("", "../index.jsp");};
@@ -103,6 +105,15 @@ function cargaScriptsMunicipios(){
     
     var iconLogout = document.getElementById('smLogout');
     iconLogout.onclick = function(){redirigir("cerrarSesion", "../index.jsp");};
+}
+
+function cargaScriptsMunicipios(){
+    
+    var btnCrearMunicipio = document.getElementById('btn-crearMunicipio');
+    btnCrearMunicipio.onclick = function(){registrarMunicipio();};
+    
+    var btnModificarMunicipio = document.getElementById('btn-modificarMunicipio');
+    btnModificarMunicipio.onclick = function(){modificarMunicipio();};
 }
 
 //FIN - carga scripts  del sitio
@@ -162,6 +173,40 @@ function verificarCorreoContraseña(correo, pass, msgCorreo, msgPass){
         }
     }
     return false;
+}
+
+function cargaTablaMuni(mensaje){
+    
+    var losDatos = mensaje.split("/");
+    
+    var tabla = document.getElementById('tabla');
+    var tbody = document.createElement('tbody');
+    
+    for(var i=0; i<(losDatos.length - 1); i++){
+        
+        var fila = document.createElement("tr");
+        var Cnombre = document.createElement("td");
+        var Copciones = document.createElement("td");
+        var iconEditar = document.createElement("span");
+        var iconEliminar = document.createElement("span"); 
+        
+        Cnombre.innerHTML = losDatos[i];
+        
+        iconEditar.setAttribute("id","iconEdit");
+        iconEditar.setAttribute("class","icon-edit");
+        iconEliminar.setAttribute("id","iconEliminar");
+        iconEliminar.setAttribute("class","icon-trash-o");
+        Copciones.appendChild(iconEditar);
+        Copciones.appendChild(iconEliminar);
+        Copciones.setAttribute("class","opciones");
+        Cnombre.setAttribute("class","municipio");
+        fila.appendChild(Cnombre);
+        fila.appendChild(Copciones);
+        tbody.appendChild(fila);
+        tbody.setAttribute("id","contFilas");
+        tabla.appendChild(tbody);
+    }
+    $("body").css({'cursor':'default'});
 }
 
 //FIN - funciones que permiten la interaccion del sitio
@@ -324,4 +369,183 @@ function registrarCuenta(tipoCuenta){
     }
 }
 
+function registrarMunicipio(){
+    
+    var municipio = document.getElementById('municipio').value;
+    
+    if(municipio === ""){
+        document.getElementById("msgEmergenteMunicipio").style.display = "block";
+        document.getElementById("msgEmergenteMunicipio").innerHTML = "Ingrese un municipio";
+    }else{
+        document.getElementById("msgEmergenteMunicipio").style.display = "none";
+        if (municipio.length > 22) {
+            document.getElementById("msgEmergenteMunicipio").style.display = "block";
+            document.getElementById("msgEmergenteMunicipio").innerHTML = "Máximo 22 caracteres";
+        } else {
+            document.getElementById("msgEmergenteMunicipio").style.display = "none";
+            $("body").css({'cursor':'wait'});
+            
+            if (window.XMLHttpRequest) {  
+            // Navegadores que siguen los estándares
+                xhttp = new XMLHttpRequest();
+            }
+            else if (window.ActiveXObject) {  // Navegadores obsoletos
+                xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xhttp.onreadystatechange = function () {
+                if (xhttp.readyState == READY_STATE_COMPLETE && xhttp.status == OK) {
+                    var mensaje = xhttp.responseText;
+                    if(mensaje.indexOf('exito')>-1){
+                        $("#municipio").val("");
+                        
+                        $("#contFilas").remove();
+                        cargarTablaMunicipios();
+                    }else{
+                        $("#msgRespuesta").css({
+                                'display':'block',
+                                'background': '#F2DEDE',
+                                'color': '#B94A48'
+                            });
+                        if(mensaje.indexOf('Duplicate')>-1){
+                            document.getElementById('msgRespuesta').innerHTML = "El municipio ya existe";
+                        }else{
+                            document.getElementById('msgRespuesta').innerHTML = mensaje;
+                        }
+                    }
+                    $("body").css({'cursor':'default'});
+                    $("#msgRespuesta").fadeOut(6000);
+                    $("html, body").animate({scrollTop:"0px"});
+                }
+            }
+            xhttp.open("POST", "../back/procesar.jsp", true);
+            xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            var queryString = "municipio=" + (municipio) + "&option=" + ("registrarMunicipio") + "&nocache=" + Math.random();
+            xhttp.send(queryString);
+        }
+    }
+}
+
+function modificarMunicipio(){
+    
+    var municipioVer = document.getElementById('muni').value;
+    var municipioMod = document.getElementById('municipio').value;
+    
+    if(municipioMod === ""){
+        document.getElementById("msgEmergenteMunicipio").style.display = "block";
+        document.getElementById("msgEmergenteMunicipio").innerHTML = "Ingrese un municipio";
+    }else{
+        document.getElementById("msgEmergenteMunicipio").style.display = "none";
+        if (municipioMod.length > 22) {
+            document.getElementById("msgEmergenteMunicipio").style.display = "block";
+            document.getElementById("msgEmergenteMunicipio").innerHTML = "Máximo 22 caracteres";
+        } else {
+            document.getElementById("msgEmergenteMunicipio").style.display = "none";
+            $("body").css({'cursor':'wait'});
+            if (window.XMLHttpRequest) {  
+            // Navegadores que siguen los estándares
+                xhttp = new XMLHttpRequest();
+            }
+            else if (window.ActiveXObject) {  // Navegadores obsoletos
+                xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xhttp.onreadystatechange = function () {
+                if (xhttp.readyState == READY_STATE_COMPLETE && xhttp.status == OK) {
+                    var mensaje = xhttp.responseText;
+                    if(mensaje.indexOf('exito')>-1){
+                        $("#municipio").val("");
+                        $("#btn-crearMunicipio").css({'display':'block'});
+                        $("#btn-modificarMunicipio").css({'display':'none'});
+                        $("#municipioVer").css({'display':'none'});
+                        $("#contFilas").remove();
+                        cargarTablaMunicipios();
+                    }else{
+                        $("#msgRespuesta").css({
+                                'display':'block',
+                                'background': '#F2DEDE',
+                                'color': '#B94A48'
+                            });
+                        if(mensaje.indexOf('Duplicate')>-1){
+                            document.getElementById('msgRespuesta').innerHTML = "El municipio ya existe";
+                        }else{
+                            document.getElementById('msgRespuesta').innerHTML = mensaje;
+                        }
+                    }
+                    $("body").css({'cursor':'default'});
+                    $("#msgRespuesta").fadeOut(6000);
+                    $("html, body").animate({scrollTop:"0px"});
+                }
+            }
+            xhttp.open("POST", "../back/procesar.jsp", true);
+            xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            var queryString = "municipioV=" + (municipioVer) + "&municipioM=" + (municipioMod) + "&option=" + ("modificarMunicipio") + "&nocache=" + Math.random();
+            xhttp.send(queryString);
+        }
+    }
+}
+
+function cargarTablaMunicipios(){
+    $("body").css({'cursor':'wait'});
+    if (window.XMLHttpRequest) {  
+    // Navegadores que siguen los estándares
+        xhttp = new XMLHttpRequest();
+    }
+    else if (window.ActiveXObject) {  // Navegadores obsoletos
+        xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    
+    xhttp.onreadystatechange = function () {
+        if (xhttp.readyState == READY_STATE_COMPLETE && xhttp.status == OK) {
+            var mensaje = xhttp.responseText;
+            cargaTablaMuni(mensaje);
+            escucharAccionOpciones();
+            document.getElementById("municipioVer").disabled = true;
+        }
+    }
+    xhttp.open("POST", "../back/procesar.jsp", true);
+    xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    var queryString = "option=" + ("consultarMunicipios") + "&nocache=" + Math.random();
+    xhttp.send(queryString);
+}
+
+function escucharAccionOpciones(){
+    $("body").on("click", "#contFilas #iconEdit", function(event){
+        event.preventDefault();
+        var fila = $(this).parent().parent();
+        var nombre = fila.children("td:eq(0)").text();
+        $("#municipioVer").val(nombre);
+        $("#muni").val(nombre);
+        $("#btn-crearMunicipio").css({'display':'none'});
+        $("#btn-modificarMunicipio").css({'display':'block'});
+        $("#municipioVer").css({'display':'block'});
+    });
+    $("body").on("click", "#contFilas #iconEliminar", function(event){
+        event.preventDefault();
+        var fila = $(this).parent().parent();
+        var nombre = fila.children("td:eq(0)").text();
+        $("body").css({'cursor':'wait'});
+        
+        if (window.XMLHttpRequest) {  
+            // Navegadores que siguen los estándares
+                xhttp = new XMLHttpRequest();
+            }
+            else if (window.ActiveXObject) {  // Navegadores obsoletos
+                xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xhttp.onreadystatechange = function () {
+                if (xhttp.readyState == READY_STATE_COMPLETE && xhttp.status == OK) {
+                    var mensaje = xhttp.responseText;
+                    if(mensaje.indexOf('exito')>-1){
+                        $("body").css({'cursor':'default'});
+                        $("#contFilas").remove();
+                        cargarTablaMunicipios();
+                    }
+                }
+            }
+            xhttp.open("POST", "../back/procesar.jsp", true);
+            xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            var queryString = "municipio=" + (nombre) + "&option=" + ("eliminarMunicipio") + "&nocache=" + Math.random();
+            xhttp.send(queryString);
+        
+    });
+}
 //FIN - metodos que interactuan con la base de datos

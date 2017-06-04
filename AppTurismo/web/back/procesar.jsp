@@ -32,6 +32,34 @@
             if (request.getParameter("option").equals("cerrarSesion")) {
                 HttpSession sesion = request.getSession();
                 sesion.removeAttribute("correoLogueado");
+            }else{
+                if (request.getParameter("option").equals("registrarMunicipio")) {
+                    String municipio = request.getParameter("municipio");
+                    rta = Controlador.agregarMunicipio(municipio);
+                    System.out.println(rta);
+                    out.print(rta);
+                }else{
+                    if (request.getParameter("option").equals("consultarMunicipios")) {
+                        rta = Controlador.consultarSelecciones();
+                        System.out.println(rta);
+                        out.print(rta);
+                    }else{
+                        if (request.getParameter("option").equals("eliminarMunicipio")) {
+                            String municipio = request.getParameter("municipio");
+                            rta = Controlador.eliminarMunicipio(municipio);
+                            System.out.println(rta);
+                            out.print(rta);
+                        }else{
+                            if (request.getParameter("option").equals("modificarMunicipio")) {
+                                String municipioV = request.getParameter("municipioV");
+                                String municipioM = request.getParameter("municipioM");
+                                rta = Controlador.modificarMunicipio(municipioV, municipioM);
+                                System.out.println(rta);
+                                out.print(rta);
+                            }
+                        }
+                    }
+                }
             }
         }
     }

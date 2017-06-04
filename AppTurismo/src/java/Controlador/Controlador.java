@@ -7,7 +7,9 @@ package Controlador;
 
 import Modelo.Conexion;
 import Modelo.dao.CuentaDao;
+import Modelo.dao.MunicipioDao;
 import Modelo.dto.Cuenta;
+import Modelo.dto.Municipio;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -77,6 +79,112 @@ public class Controlador {
         }
         CuentaDao cd = new CuentaDao(this.co);
         String mensaje = cd.agregarCuenta(c);
+
+        if (mensaje.equals("error")) {
+            try {
+                co.rollback();
+                mensaje = "Ha ocurrido un error a la hora de registrar la cuenta.";
+            } catch (SQLException ex) {
+                Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            try {
+                co.commit();
+            } catch (SQLException ex) {
+                Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        this.desconectar();
+        return mensaje;
+    }
+    
+    public String agregarMunicipio(String nombreM) {
+        Municipio m = new Municipio();
+        
+        m.setNombre(nombreM);
+        
+        this.conectar();
+        try {
+            this.co.setAutoCommit(false);
+        } catch (SQLException ex) {
+            Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        MunicipioDao md = new MunicipioDao(this.co);
+        String mensaje = md.agregarMunicipio(m);
+
+        if (mensaje.equals("error")) {
+            try {
+                co.rollback();
+                mensaje = "Ha ocurrido un error a la hora de registrar la cuenta.";
+            } catch (SQLException ex) {
+                Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            try {
+                co.commit();
+            } catch (SQLException ex) {
+                Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        this.desconectar();
+        return mensaje;
+    }
+    
+    public String consultarSelecciones(){
+        this.conectar();
+        
+        MunicipioDao md = new MunicipioDao(this.co);
+        String mensaje = md.consultarMunicipios();
+        return mensaje;
+    }
+    
+    public String modificarMunicipio(String muniVer, String muniMod) {
+        Municipio cV = new Municipio();
+        Municipio cM = new Municipio();
+        
+        cV.setNombre(muniVer);
+        cM.setNombre(muniMod);
+        
+        this.conectar();
+        try {
+            this.co.setAutoCommit(false);
+        } catch (SQLException ex) {
+            Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        MunicipioDao md = new MunicipioDao(this.co);
+        String mensaje = md.modificarMunicipio(cV, cM);
+
+        if (mensaje.equals("error")) {
+            try {
+                co.rollback();
+                mensaje = "Ha ocurrido un error a la hora de registrar la cuenta.";
+            } catch (SQLException ex) {
+                Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            try {
+                co.commit();
+            } catch (SQLException ex) {
+                Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        this.desconectar();
+        return mensaje;
+    }
+    
+    public String eliminarMunicipio(String nombre) {
+        Municipio m = new Municipio();
+        
+        m.setNombre(nombre);
+        
+        this.conectar();
+        try {
+            this.co.setAutoCommit(false);
+        } catch (SQLException ex) {
+            Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        MunicipioDao md = new MunicipioDao(this.co);
+        String mensaje = md.eliminarMunicipio(m);
 
         if (mensaje.equals("error")) {
             try {
