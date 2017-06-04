@@ -37,7 +37,7 @@ public class CuentaDao {
             this.ps.execute();
 
         } catch (Exception e) {
-            msg = "ERROR EN EL DAO:: " + e.getMessage();
+            msg = "error: ERROR EN EL DAO:: " + e.getMessage();
             System.out.println("ERROR EN EL DAO:: " + e.getMessage());
         } finally {
             try {
@@ -84,6 +84,55 @@ public class CuentaDao {
             this.ps.setString(1, cMod.getCorreo());
             this.ps.setString(2, cMod.getPassword());
             this.ps.setString(3, cVer.getCorreo());
+
+            this.ps.execute();
+
+        } catch (Exception e) {
+            msg = "ERROR EN EL DAO:: " + e.getMessage();
+            System.out.println("ERROR EN EL DAO:: " + e.getMessage());
+        } finally {
+            try {
+                this.ps.close();
+                this.ps = null;
+            } catch (SQLException ex) {
+                Logger.getLogger(CuentaDao.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return msg;
+    }
+    
+    public String consultarCuentas() {
+        String msg = "";
+        try {
+            this.ps = this.co.prepareStatement("SELECT CUENTAS_correo, nombre, tipo_cuenta FROM USUARIOS u INNER JOIN CUENTAS c ON u.CUENTAS_correo = c.correo ORDER BY tipo_cuenta ASC;");
+            rs = ps.executeQuery();
+
+            if (rs != null) {
+                while (rs.next()) {
+                    msg += rs.getString(1)+"-";
+                    msg += rs.getString(2)+"-";
+                    msg += rs.getString(3)+"/";
+                }
+            }
+        } catch (Exception e) {
+            msg = "ERROR EN EL DAO:: " + e.getMessage();
+            System.out.println("ERROR EN EL DAO:: " + e.getMessage());
+        } finally {
+            try {
+                this.ps.close();
+                this.ps = null;
+            } catch (SQLException ex) {
+                Logger.getLogger(CuentaDao.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return msg;
+    }
+    
+    public String eliminarCuenta(Cuenta c) {
+        String msg = "exito";
+        try {
+            this.ps = this.co.prepareStatement("DELETE FROM CUENTAS WHERE correo = ?;");
+            this.ps.setString(1, c.getCorreo());
 
             this.ps.execute();
 

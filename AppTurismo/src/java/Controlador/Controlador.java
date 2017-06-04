@@ -8,8 +8,10 @@ package Controlador;
 import Modelo.Conexion;
 import Modelo.dao.CuentaDao;
 import Modelo.dao.MunicipioDao;
+import Modelo.dao.UsuarioDao;
 import Modelo.dto.Cuenta;
 import Modelo.dto.Municipio;
+import Modelo.dto.Usuario;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -66,10 +68,13 @@ public class Controlador {
     
     public String agregarCuenta(String correo, String password, String tipoCuenta) {
         Cuenta c = new Cuenta();
+        Usuario u = new Usuario();
+        String mensaje = "";
         
         c.setCorreo(correo);
         c.setPassword(password);
         c.setTipoCuenta(tipoCuenta);
+        u.setCorreo(correo);
         
         this.conectar();
         try {
@@ -78,10 +83,15 @@ public class Controlador {
             Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
         }
         CuentaDao cd = new CuentaDao(this.co);
-        String mensaje = cd.agregarCuenta(c);
+        UsuarioDao ud = new UsuarioDao(this.co);
+        
+        String mensaje1 = cd.agregarCuenta(c);
+        String mensaje2 = ud.agregarUsuario(u);
 
-        if (mensaje.equals("error")) {
+        if (mensaje1.indexOf("error")>-1 || mensaje2.indexOf("error")>-1) {
             try {
+                System.err.println(mensaje1);
+                System.err.println(mensaje2);
                 co.rollback();
                 mensaje = "Ha ocurrido un error a la hora de registrar la cuenta.";
             } catch (SQLException ex) {
@@ -89,6 +99,7 @@ public class Controlador {
             }
         } else {
             try {
+                mensaje = "exito";
                 co.commit();
             } catch (SQLException ex) {
                 Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
@@ -115,6 +126,46 @@ public class Controlador {
         }
         CuentaDao cd = new CuentaDao(this.co);
         String mensaje = cd.modificarCuenta(cV, cM);
+
+        if (mensaje.equals("error")) {
+            try {
+                co.rollback();
+                mensaje = "Ha ocurrido un error a la hora de registrar la cuenta.";
+            } catch (SQLException ex) {
+                Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            try {
+                co.commit();
+            } catch (SQLException ex) {
+                Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        this.desconectar();
+        return mensaje;
+    }
+    
+    public String consultarCuentas(){
+        this.conectar();
+        
+        CuentaDao cd = new CuentaDao(this.co);
+        String mensaje = cd.consultarCuentas();
+        return mensaje;
+    }
+    
+    public String eliminarCuenta(String correo) {
+        Cuenta c = new Cuenta();
+        
+        c.setCorreo(correo);
+        
+        this.conectar();
+        try {
+            this.co.setAutoCommit(false);
+        } catch (SQLException ex) {
+            Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        CuentaDao cd = new CuentaDao(this.co);
+        String mensaje = cd.eliminarCuenta(c);
 
         if (mensaje.equals("error")) {
             try {

@@ -53,6 +53,7 @@ function cargarScripts(){
                 }else{
                     if(cuentasSistema >= 0){
                         cargaScriptsBasicosLogueado();
+                        cargaTablaCuentas();
                     }
                 }
             }
@@ -228,6 +229,47 @@ function cargaTablaMuni(mensaje){
         Copciones.setAttribute("class","opciones");
         Cnombre.setAttribute("class","municipio");
         fila.appendChild(Cnombre);
+        fila.appendChild(Copciones);
+        tbody.appendChild(fila);
+        tbody.setAttribute("id","contFilas");
+        tabla.appendChild(tbody);
+    }
+    $("body").css({'cursor':'default'});
+}
+
+function cargaTablaCuent(mensaje){
+    var losDatos = mensaje.split("/");
+    
+    var tabla = document.getElementById('tabla');
+    var tbody = document.createElement('tbody');
+    
+    for(var i=0; i<(losDatos.length - 1); i++){
+        
+        var datos = losDatos[i].split("-");
+        
+        var fila = document.createElement("tr");
+        var Ccuenta = document.createElement("td");
+        var Cnombre = document.createElement("td");
+        var Ctipocuenta = document.createElement("td");
+        var Copciones = document.createElement("td");
+        var iconEliminar = document.createElement("span"); 
+        
+        Ccuenta.innerHTML = datos[0];
+        Cnombre.innerHTML = datos[1];
+        Ctipocuenta.innerHTML = datos[2];
+        
+        if(datos[2]==="Administrador"){
+            iconEliminar.setAttribute("id","iconEdit");
+            iconEliminar.setAttribute("class","icon-edit");
+        }else{
+            iconEliminar.setAttribute("id","iconEliminar");
+            iconEliminar.setAttribute("class","icon-trash-o");
+        }
+        Copciones.appendChild(iconEliminar);
+        Copciones.setAttribute("class","opciones");
+        fila.appendChild(Ccuenta);
+        fila.appendChild(Cnombre);
+        fila.appendChild(Ctipocuenta);
         fila.appendChild(Copciones);
         tbody.appendChild(fila);
         tbody.setAttribute("id","contFilas");
@@ -534,6 +576,29 @@ function cargarTablaMunicipios(){
     xhttp.send(queryString);
 }
 
+function cargaTablaCuentas(){
+    $("body").css({'cursor':'wait'});
+    if (window.XMLHttpRequest) {  
+    // Navegadores que siguen los estándares
+        xhttp = new XMLHttpRequest();
+    }
+    else if (window.ActiveXObject) {  // Navegadores obsoletos
+        xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    
+    xhttp.onreadystatechange = function () {
+        if (xhttp.readyState == READY_STATE_COMPLETE && xhttp.status == OK) {
+            var mensaje = xhttp.responseText;
+            cargaTablaCuent(mensaje);
+            escucharAccionOpcionesTablaCuentas();
+        }
+    }
+    xhttp.open("POST", "../back/procesar.jsp", true);
+    xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    var queryString = "option=" + ("consultarCuentas") + "&nocache=" + Math.random();
+    xhttp.send(queryString);
+}
+
 function escucharAccionOpciones(){
     $("body").on("click", "#contFilas #iconEdit", function(event){
         event.preventDefault();
@@ -573,6 +638,42 @@ function escucharAccionOpciones(){
             var queryString = "municipio=" + (nombre) + "&option=" + ("eliminarMunicipio") + "&nocache=" + Math.random();
             xhttp.send(queryString);
         
+    });
+}
+
+function escucharAccionOpcionesTablaCuentas(){
+    $("body").on("click", "#contFilas #iconEliminar", function(event){
+        event.preventDefault();
+        var fila = $(this).parent().parent();
+        var correo = fila.children("td:eq(0)").text();
+        $("body").css({'cursor':'wait'});
+        
+        if (window.XMLHttpRequest) {  
+            // Navegadores que siguen los estándares
+                xhttp = new XMLHttpRequest();
+            }
+            else if (window.ActiveXObject) {  // Navegadores obsoletos
+                xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xhttp.onreadystatechange = function () {
+                if (xhttp.readyState == READY_STATE_COMPLETE && xhttp.status == OK) {
+                    var mensaje = xhttp.responseText;
+                    if(mensaje.indexOf('exito')>-1){
+                        $("body").css({'cursor':'default'});
+                        $("#contFilas").remove();
+                        cargaTablaCuentas();
+                    }
+                }
+            }
+            xhttp.open("POST", "../back/procesar.jsp", true);
+            xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            var queryString = "correo=" + (correo) + "&option=" + ("eliminarCuenta") + "&nocache=" + Math.random();
+            xhttp.send(queryString);
+        
+    });
+    $("body").on("click", "#contFilas #iconEdit", function(event){
+        event.preventDefault();
+        window.location = "mi_cuenta.jsp";
     });
 }
 

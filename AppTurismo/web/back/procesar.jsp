@@ -68,6 +68,19 @@
                                     }
                                     System.out.println(rta);
                                     out.print(rta);
+                                }else{
+                                    if (request.getParameter("option").equals("consultarCuentas")) {
+                                        rta = Controlador.consultarCuentas();
+                                        System.out.println(rta);
+                                        out.print(rta);
+                                    }else{
+                                        if (request.getParameter("option").equals("eliminarCuenta")) {
+                                            String correo = request.getParameter("correo");
+                                            rta = Controlador.eliminarCuenta(correo);
+                                            System.out.println(rta);
+                                            out.print(rta);
+                                        }
+                                    }
                                 }
                             }
                         }
