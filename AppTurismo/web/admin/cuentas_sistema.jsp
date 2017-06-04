@@ -46,7 +46,7 @@
                 <div id="acciones" class="acciones colTransFuerte">
                     <ul>
                         <li id="m-municipio">Municipios</li>
-                        <li>Sitios Turisticos</li>
+                        <li id="m-sitioTuristico">Sitios Turisticos</li>
                         <li id="m-cuentasSistema" class="itemMenu-seleccionado">Cuentas del sistema</li>
                         <li id="m-miCuenta">Mi cuenta</li>
                     </ul>

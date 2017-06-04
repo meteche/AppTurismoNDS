@@ -283,7 +283,7 @@ header{
 }
 
 .contenedor-acciones, .acciones{
-    //height: 1210px;
+    height: 600px;
     color: #FFFFFF;
 }
 
@@ -374,6 +374,10 @@ legend{
 
 .ocultar{
     display: none;
+}
+
+.margenInferior{
+    margin-bottom: 10px;
 }
 
 @media screen and (min-width: 480px){

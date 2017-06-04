@@ -1,6 +1,6 @@
 <%-- 
-    Document   : municipios
-    Created on : 2/06/2017, 10:20:01 PM
+    Document   : sitio_turistico
+    Created on : 4/06/2017, 02:16:00 PM
     Author     : Ruben D
 --%>
 
@@ -45,8 +45,8 @@
             <div class="contenedor-acciones ">
                 <div id="acciones" class="acciones colTransFuerte">
                     <ul>
-                        <li id="m-municipio" class="itemMenu-seleccionado">Municipios</li>
-                        <li id="m-sitioTuristico">Sitios Turisticos</li>
+                        <li id="m-municipio">Municipios</li>
+                        <li id="m-sitioTuristico" class="itemMenu-seleccionado">Sitios Turisticos</li>
                         <li id="m-cuentasSistema">Cuentas del sistema</li>
                         <li id="m-miCuenta">Mi cuenta</li>
                     </ul>
@@ -63,23 +63,39 @@
                 <div class="contenedor">
                     <div class="muniPrincippal">
                         <div>
-                            <h1>Municipios</h1>
+                            <div>
+                                <h1>Sitios turisticos</h1>
+                            </div>
+                            <div>
+                                <legend>Municipio:</legend>
+                            </div>
+                            <div class="input margenInferior">
+                                <select id="tipoEmpresa" name="tipoEmpresa">
+                                    <option>Seleccione un municipio</option>
+                                </select>
+                            </div>
+                            <div class="inputBtn centrar margenInferior">
+                                <input id="btn-crearMunicipio" class="btn-primario" type="button" value="Buscar">
+                            </div>
                         </div>
-                        <div class="contenedor-tabla">
-                            <table id="tabla">
-                                <thead>
-                                    <tr>
-                                        <th>Municipios</th>
-                                        <th>Opciones</th>
-                                    </tr>
-                                </thead>
-                            </table>
+                        <div class="margen-top">
+                            <div class="contenedor-tabla">
+                                <table id="tabla">
+                                    <thead>
+                                        <tr>
+                                            <th>Nombre</th>
+                                            <th>Municipio</th>
+                                            <th>Opciones</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
                         </div>
                     </div>
                     <div class="muniOpcion">
                         <div>
                             <div>
-                                <legend>Municipio</legend>
+                                <legend>Sitio turistico</legend>
                             </div>
                             <div  class="input">
                                 <input id="muni" class="ocultar" type="text">

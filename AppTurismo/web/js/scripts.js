@@ -34,6 +34,7 @@ function cargarScripts(){
     var municipios = window.location.pathname.indexOf("admin/municipios.jsp");
     var miCuenta = window.location.pathname.indexOf("admin/mi_cuenta.jsp");
     var cuentasSistema = window.location.pathname.indexOf("admin/cuentas_sistema.jsp");
+    var sitioTuristico = window.location.pathname.indexOf("admin/sitio_turistico.jsp");
     
     if(inicio >= 0){
         cargaScriptsBasicos();
@@ -54,6 +55,10 @@ function cargarScripts(){
                     if(cuentasSistema >= 0){
                         cargaScriptsBasicosLogueado();
                         cargaTablaCuentas();
+                    }else{
+                        if(sitioTuristico >= 0){
+                            cargaScriptsBasicosLogueado();
+                        }
                     }
                 }
             }
@@ -127,6 +132,9 @@ function cargaScriptsBasicosLogueado(){
     
     var btnMMiCuenta = document.getElementById('m-miCuenta');
     btnMMiCuenta.onclick = function(){redirigir("", "mi_cuenta.jsp");};
+    
+    var btnMSitioTuristico = document.getElementById('m-sitioTuristico');
+    btnMSitioTuristico.onclick = function(){redirigir("", "sitio_turistico.jsp");};
 }
 
 function cargaScriptsMunicipios(){
