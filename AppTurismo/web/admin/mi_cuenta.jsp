@@ -1,6 +1,6 @@
 <%-- 
-    Document   : municipios
-    Created on : 2/06/2017, 10:20:01 PM
+    Document   : mi_cuenta
+    Created on : 4/06/2017, 10:27:34 AM
     Author     : Ruben D
 --%>
 
@@ -45,10 +45,10 @@
             <div class="contenedor-acciones ">
                 <div id="acciones" class="acciones colTransFuerte">
                     <ul>
-                        <li id="m-municipio" class="itemMenu-seleccionado">Municipios</li>
+                        <li id="m-municipio">Municipios</li>
                         <li>Sitios Turisticos</li>
                         <li>Cuentas de acceso</li>
-                        <li id="m-miCuenta">Mi cuenta</li>
+                        <li id="m-miCuenta" class="itemMenu-seleccionado">Mi cuenta</li>
                     </ul>
                 </div>
                 <div id="mostrarMenu" class="mostrarMenu"><span class="icon-caret-right"><br></span><span class="icon-caret-left"></span></div>
@@ -63,36 +63,23 @@
                 <div class="contenedor">
                     <div class="muniPrincippal">
                         <div>
-                            <h1>Municipios</h1>
+                            <h1>Mi cuenta</h1>
                         </div>
-                        <div class="contenedor-tabla">
-                            <table id="tabla">
-                                <thead>
-                                    <tr>
-                                        <th>Municipios</th>
-                                        <th>Opciones</th>
-                                    </tr>
-                                </thead>
-                            </table>
+                        <p id="msgEmergenteMunicipio" class="msgEmergente"></p>
+                        <div  class="input">
+                            <input id="correoVer" type="text" class="ocultar" value=<%='"'+correoL+'"'%>>
+                            <input id="correo" type="text" placeholder="Correo" value=<%='"'+correoL+'"'%>>
                         </div>
-                    </div>
-                    <div class="muniOpcion">
-                        <div>
-                            <div>
-                                <legend>Municipio</legend>
-                            </div>
-                            <div  class="input">
-                                <input id="muni" class="ocultar" type="text">
-                                <input id="municipioVer" class="ocultar" type="text" placeholder="Municipio">
-                            </div>
-                            <p id="msgEmergenteMunicipio" class="msgEmergente"></p>
-                            <div  class="input">
-                                <input id="municipio" type="text" placeholder="Municipio">
-                            </div>
-                            <div  class="inputBtn centrar">
-                                <input id="btn-crearMunicipio" class="btn-primario" type="button" value="Crear">
-                                <input id="btn-modificarMunicipio" class="btn-primario ocultar" type="button" value="Modificar">
-                            </div>
+                        <p id="msgEmergenteMunicipio" class="msgEmergente"></p>
+                        <div  class="input">
+                            <input id="newPass" type="text" placeholder="Nueva Contraseña">
+                        </div>
+                        <p id="msgEmergenteMunicipio" class="msgEmergente"></p>
+                        <div  class="input">
+                            <input id="verPass" type="text" placeholder="Verificar Contraseña">
+                        </div>
+                        <div  class="inputBtn centrar">
+                            <input id="btn-guardarCambios" class="btn-primario" type="button" value="Guardar cambios">
                         </div>
                     </div>
                 </div>
