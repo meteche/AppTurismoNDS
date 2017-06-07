@@ -8,9 +8,11 @@ package Controlador;
 import Modelo.Conexion;
 import Modelo.dao.CuentaDao;
 import Modelo.dao.MunicipioDao;
+import Modelo.dao.SitioTuristicoDao;
 import Modelo.dao.UsuarioDao;
 import Modelo.dto.Cuenta;
 import Modelo.dto.Municipio;
+import Modelo.dto.SitioTuristico;
 import Modelo.dto.Usuario;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -217,7 +219,7 @@ public class Controlador {
         return mensaje;
     }
     
-    public String consultarSelecciones(){
+    public String consultarMunicipios(){
         this.conectar();
         
         MunicipioDao md = new MunicipioDao(this.co);
@@ -277,6 +279,149 @@ public class Controlador {
             try {
                 co.rollback();
                 mensaje = "Ha ocurrido un error a la hora de registrar la cuenta.";
+            } catch (SQLException ex) {
+                Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            try {
+                co.commit();
+            } catch (SQLException ex) {
+                Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        this.desconectar();
+        return mensaje;
+    }
+    
+    public String agregarSitioTuristico(String nombre, String municipio, String descripcion, String imagen) {
+        SitioTuristico st = new SitioTuristico();
+        
+        st.setNombre(nombre);
+        st.setMunicipio(municipio);
+        st.setDescripcion(descripcion);
+        st.setImagen(imagen);
+        
+        this.conectar();
+        try {
+            this.co.setAutoCommit(false);
+        } catch (SQLException ex) {
+            Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        SitioTuristicoDao std = new SitioTuristicoDao(this.co);
+        String mensaje = std.agregarSitioTuristico(st);
+
+        if (mensaje.equals("error")) {
+            try {
+                co.rollback();
+                mensaje = "Ha ocurrido un error a la hora de registrar el sitio turistico.";
+            } catch (SQLException ex) {
+                Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            try {
+                co.commit();
+            } catch (SQLException ex) {
+                Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        this.desconectar();
+        return mensaje;
+    }
+    
+    public String consultarSitiosTuristicos(){
+        this.conectar();
+        
+        SitioTuristicoDao std = new SitioTuristicoDao(this.co);
+        String mensaje = std.consultarSitiosTuristicos();
+        return mensaje;
+    }
+    
+    public String consultarSitioTuristicoPorID(String nombre, String municipio){
+        SitioTuristico st = new SitioTuristico();
+        
+        st.setNombre(nombre);
+        st.setMunicipio(municipio);
+        this.conectar();
+        
+        SitioTuristicoDao std = new SitioTuristicoDao(this.co);
+        String mensaje = std.consultarSitioTuristicoPorID(st);
+        return mensaje;
+    }
+    
+    public String consultarSitioTuristicoPorMunicipio(String municipio){
+        String mensaje = "";
+        SitioTuristico st = new SitioTuristico();
+        
+        st.setMunicipio(municipio);
+        this.conectar();
+        
+        SitioTuristicoDao std = new SitioTuristicoDao(this.co);
+        if(municipio.equals("Seleccione un municipio")){
+            mensaje = std.consultarSitiosTuristicos();
+        }else{
+            mensaje = std.consultarSitioTuristicoPorMunicipio(st);
+        }
+        this.desconectar();
+        return mensaje;
+    }
+    
+    public String modificarSitioTuristico(String nombreSTVer, String municipioVer, String nombreST, String municipio,  String descripcion, String imagen) {
+        SitioTuristico stV = new SitioTuristico();
+        SitioTuristico stM = new SitioTuristico();
+        
+        stV.setNombre(nombreSTVer);
+        stV.setMunicipio(municipioVer);
+        stM.setNombre(nombreST);
+        stM.setMunicipio(municipio);
+        stM.setDescripcion(descripcion);
+        stM.setImagen(imagen);
+        
+        this.conectar();
+        try {
+            this.co.setAutoCommit(false);
+        } catch (SQLException ex) {
+            Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        SitioTuristicoDao std = new SitioTuristicoDao(this.co);
+        String mensaje = std.modificarSitioTuristico(stV, stM);
+
+        if (mensaje.equals("error")) {
+            try {
+                co.rollback();
+                mensaje = "Ha ocurrido un error a la hora de modificar el sitio turistico.";
+            } catch (SQLException ex) {
+                Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            try {
+                co.commit();
+            } catch (SQLException ex) {
+                Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        this.desconectar();
+        return mensaje;
+    }
+    
+    public String eliminarSitioTuristico(String nombre, String municipio) {
+        SitioTuristico st = new SitioTuristico();
+        
+        st.setNombre(nombre);
+        st.setMunicipio(municipio);
+        
+        this.conectar();
+        try {
+            this.co.setAutoCommit(false);
+        } catch (SQLException ex) {
+            Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        SitioTuristicoDao std = new SitioTuristicoDao(this.co);
+        String mensaje = std.eliminarSitioTuristico(st);
+
+        if (mensaje.equals("error")) {
+            try {
+                co.rollback();
+                mensaje = "Ha ocurrido un error a la hora de eliminar el sitio turistico.";
             } catch (SQLException ex) {
                 Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
             }

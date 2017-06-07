@@ -40,7 +40,7 @@
                     out.print(rta);
                 }else{
                     if (request.getParameter("option").equals("consultarMunicipios")) {
-                        rta = Controlador.consultarSelecciones();
+                        rta = Controlador.consultarMunicipios();
                         System.out.println(rta);
                         out.print(rta);
                     }else{
@@ -79,6 +79,41 @@
                                             rta = Controlador.eliminarCuenta(correo);
                                             System.out.println(rta);
                                             out.print(rta);
+                                        }else{
+                                            if (request.getParameter("option").equals("cargarSelectores")) {
+                                                rta = Controlador.consultarMunicipios();
+                                                System.out.println(rta);
+                                                out.print(rta);
+                                            }else{
+                                                if (request.getParameter("option").equals("consultarSitiosTuristicos")) {
+                                                    rta = Controlador.consultarSitiosTuristicos();
+                                                    System.out.println(rta);
+                                                    out.print(rta);
+                                                }else{
+                                                    if (request.getParameter("option").equals("consultarSTporID")) {
+                                                        String nombre = request.getParameter("nombreST");
+                                                        String municipio = request.getParameter("municipio");
+                                                        rta = Controlador.consultarSitioTuristicoPorID(nombre, municipio);
+                                                        System.out.println(rta);
+                                                        out.print(rta);
+                                                    }else{
+                                                        if (request.getParameter("option").equals("consultarSitioTuristicoPorMunicipio")) {
+                                                            String municipio = request.getParameter("municipio");
+                                                            rta = Controlador.consultarSitioTuristicoPorMunicipio(municipio);
+                                                            System.out.println(rta);
+                                                            out.print(rta);
+                                                        }else{
+                                                            if (request.getParameter("option").equals("eliminarST")) {
+                                                                String nombre = request.getParameter("nombreST");
+                                                                String municipio = request.getParameter("municipio");
+                                                                rta = Controlador.eliminarSitioTuristico(nombre, municipio);
+                                                                System.out.println(rta);
+                                                                out.print(rta);
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
                                         }
                                     }
                                 }

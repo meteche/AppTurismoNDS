@@ -58,6 +58,8 @@ function cargarScripts(){
                     }else{
                         if(sitioTuristico >= 0){
                             cargaScriptsBasicosLogueado();
+                            cargarScriptsST();
+                            cargarSelectores();
                         }
                     }
                 }
@@ -152,6 +154,17 @@ function cargaScriptsMiCuenta(){
     btnGuardarCambios.onclick = function(){modificarCuenta();};
 }
 
+function cargarScriptsST(){
+    validarDatosSubirImagen();
+    respuestaSistema();
+    
+    var btnBuscarSTMunicipio = document.getElementById('btn-buscarST');
+    btnBuscarSTMunicipio.onclick = function(){buscarPorMunicipio();};
+    
+    var btnCancelar = document.getElementById('btn-cancelar');
+    btnCancelar.onclick = function(){redirigir("","sitio_turistico.jsp")};
+}
+
 //FIN - carga scripts  del sitio
 
 /*
@@ -232,8 +245,12 @@ function cargaTablaMuni(mensaje){
         iconEditar.setAttribute("class","icon-edit");
         iconEliminar.setAttribute("id","iconEliminar");
         iconEliminar.setAttribute("class","icon-trash-o");
-        Copciones.appendChild(iconEditar);
-        Copciones.appendChild(iconEliminar);
+        if(losDatos[i].indexOf("1 campo no valido")<0){
+            Copciones.appendChild(iconEditar);
+            Copciones.appendChild(iconEliminar);
+        }else{
+            fila.setAttribute("class","ocultar");
+        }
         Copciones.setAttribute("class","opciones");
         Cnombre.setAttribute("class","municipio");
         fila.appendChild(Cnombre);
@@ -284,6 +301,124 @@ function cargaTablaCuent(mensaje){
         tabla.appendChild(tbody);
     }
     $("body").css({'cursor':'default'});
+}
+
+function cargaTablaST(mensaje){
+    var losDatos = mensaje.split("/");
+    
+    var tabla = document.getElementById('tabla');
+    var tbody = document.createElement('tbody');
+    
+    for(var i=0; i<(losDatos.length - 1); i++){
+        
+        var datos = losDatos[i].split("-");
+        
+        var fila = document.createElement("tr");
+        var Cnombre = document.createElement("td");
+        var Cmunicipio = document.createElement("td");
+        var Copciones = document.createElement("td");
+        var iconEditar = document.createElement("span"); 
+        var iconEliminar = document.createElement("span"); 
+        
+        Cnombre.innerHTML = datos[0];
+        Cmunicipio.innerHTML = datos[1];
+        
+        iconEditar.setAttribute("id","iconEdit");
+        iconEditar.setAttribute("class","icon-edit");
+        iconEliminar.setAttribute("id","iconEliminar");
+        iconEliminar.setAttribute("class","icon-trash-o");
+        Copciones.appendChild(iconEditar);
+        Copciones.appendChild(iconEliminar);
+        Copciones.setAttribute("class","opciones");
+        fila.appendChild(Cnombre);
+        fila.appendChild(Cmunicipio);
+        fila.appendChild(Copciones);
+        if(datos[0].indexOf("no valido")>-1){
+            fila.setAttribute("class","ocultar");
+        }
+        tbody.appendChild(fila);
+        tbody.setAttribute("id","contFilas");
+        tabla.appendChild(tbody);
+    }
+    $("body").css({'cursor':'default'});
+}
+
+function agregarMunicipiosSelectores(selectorid, mensaje){
+    
+    var municipios = mensaje.split("/");
+    
+    var sel = document.getElementById(selectorid);
+    
+    for(var i=0; i<(municipios.length - 1); i++){
+        var opcion = document.createElement('option');
+        opcion.innerHTML = municipios[i];
+        if(municipios[i].indexOf("1 campo no valido")<0){
+            sel.appendChild(opcion);
+        }
+    }
+    $("body").css({'cursor':'default'});
+}
+
+function validarDatosSubirImagen(){
+    $("#form-regST").submit(function() {
+        if(document.getElementById('nombreST').value === ""){
+            document.getElementById("msgEmergenteST").style.display = "block";
+            document.getElementById("msgEmergenteST").innerHTML = "Ingrese el nombre del sitio turistico";
+            return false;
+        }else{
+            document.getElementById("msgEmergenteST").style.display = "none";
+            if(document.getElementById('selMuniSitioTuristico').value === "Seleccione un municipio"){
+                document.getElementById("msgEmergenteSelMunST").style.display = "block";
+                document.getElementById("msgEmergenteSelMunST").innerHTML = "Seleccione un municipio";
+                return false;
+            }else{
+                document.getElementById("msgEmergenteSelMunST").style.display = "none";
+                if(document.getElementById('txtDesc').value === ""){
+                    document.getElementById("msgEmergenteDescST").style.display = "block";
+                    document.getElementById("msgEmergenteDescST").innerHTML = "Ingrese una descripción";
+                    return false;
+                }else{
+                    document.getElementById("msgEmergenteDescST").style.display = "none";
+                    var nombreImg = document.getElementById('imagenST').files[0].name;
+                    var nombre = nombreImg.split(".");
+                    if(nombreImg !== ""){
+                        if (/.(gif|jpeg|jpg|png)$/i.test(document.getElementById("imagenST").value)){
+                            document.getElementById("msgEmergenteImgST").style.display = "none";
+                            var fileSize = $('#imagenST')[0].files[0].size;
+                            var sizeImg = fileSize / 1024;
+                            if(sizeImg > 1024){
+                                document.getElementById("msgEmergenteImgST").style.display = "block";
+                                document.getElementById("msgEmergenteImgST").innerHTML = "La imagen no debe superar mas de 1MB de peso";
+                                return false;
+                            }else{
+                                document.getElementById("msgEmergenteImgST").style.display = "none";
+                                return true;
+                            }
+                        }else{
+                            document.getElementById("msgEmergenteImgST").style.display = "block";
+                            document.getElementById("msgEmergenteImgST").innerHTML = "Comprueba la extensión de tus imagenes, recuerda que los formatos aceptados son .gif, .jpeg, .jpg y .png";
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
+
+function respuestaSistema(){
+    if($("#respuestaSistema").text() === "ningun mensaje"){
+        
+    }else{
+        $("#msgRespuesta").css({
+                'display':'block',
+                'background': '#F2DEDE',
+                'color': '#B94A48'
+            });
+            document.getElementById("msgRespuesta").innerHTML = $("#respuestaSistema").text();
+            $("#msgRespuesta").fadeOut(6000);
+            $("html, body").animate({scrollTop:"0px"});
+    }
 }
 
 //FIN - funciones que permiten la interaccion del sitio
@@ -740,6 +875,158 @@ function modificarCuenta(){
             }
         }
     }
+}
+
+function cargarSelectores(){
+    
+    $("body").css({'cursor':'wait'});
+    if (window.XMLHttpRequest) {  
+    // Navegadores que siguen los estándares
+        xhttp = new XMLHttpRequest();
+    }
+    else if (window.ActiveXObject) {  // Navegadores obsoletos
+        xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    
+    xhttp.onreadystatechange = function () {
+        if (xhttp.readyState == READY_STATE_COMPLETE && xhttp.status == OK) {
+            var mensaje = xhttp.responseText;
+            agregarMunicipiosSelectores("selMunicipio", mensaje);
+            agregarMunicipiosSelectores("selMuniSitioTuristico", mensaje);
+            cargarTablaSitiosTuristicos();
+        }
+    }
+    xhttp.open("POST", "../back/procesar.jsp", true);
+    xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    var queryString = "option=" + ("cargarSelectores") + "&nocache=" + Math.random();
+    xhttp.send(queryString);
+}
+
+function cargarTablaSitiosTuristicos(){
+    $("body").css({'cursor':'wait'});
+    if (window.XMLHttpRequest) {  
+    // Navegadores que siguen los estándares
+        xhttp = new XMLHttpRequest();
+    }
+    else if (window.ActiveXObject) {  // Navegadores obsoletos
+        xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    
+    xhttp.onreadystatechange = function () {
+        if (xhttp.readyState == READY_STATE_COMPLETE && xhttp.status == OK) {
+            var mensaje = xhttp.responseText;
+            cargaTablaST(mensaje);
+            escucharAccionOpcionesTablaST();
+            $("body").css({'cursor':'default'});
+        }
+    }
+    xhttp.open("POST", "../back/procesar.jsp", true);
+    xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    var queryString = "option=" + ("consultarSitiosTuristicos") + "&nocache=" + Math.random();
+    xhttp.send(queryString);
+}
+
+function escucharAccionOpcionesTablaST(){
+    $("body").on("click", "#contFilas #iconEdit", function(event){
+        event.preventDefault();
+        $("body").css({'cursor':'wait'});
+        var fila = $(this).parent().parent();
+        var nombreST = fila.children("td:eq(0)").text();
+        var municipio = fila.children("td:eq(1)").text();
+        $("#accion").val("mr");
+        if (window.XMLHttpRequest) {  
+        // Navegadores que siguen los estándares
+            xhttp = new XMLHttpRequest();
+        }
+        else if (window.ActiveXObject) {  // Navegadores obsoletos
+            xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xhttp.onreadystatechange = function () {
+            if (xhttp.readyState == READY_STATE_COMPLETE && xhttp.status == OK) {
+                var mensaje = xhttp.responseText;
+                var datos = mensaje.split("-");
+                $("#verNameST").val(datos[0]);
+                $("#nombreST").val(datos[0]);
+                $("#verMuniST").val(datos[1]);
+                $("#selMuniSitioTuristico").val(datos[1]);
+                $("#txtDesc").val(datos[2]);
+                $("#nameST").val(nombreST);
+                $("#nameST").css({'display':'block'});
+                $("#imgCargada").css({'display':'block'});
+                $("#imgCargada").val(datos[3]);
+                $("#img").val(datos[3]);
+                document.getElementById("nameST").disabled = true;
+                document.getElementById("imgCargada").disabled = true;
+                $("#btn-crearSitioTuristico").css({'display':'none'});
+                $("#btn-modificarSitioTuristico").css({'display':'block'});
+                $("#btn-cancelar").css({'display':'block'});
+                $("body").css({'cursor':'default'});
+            }
+        }
+        xhttp.open("POST", "../back/procesar.jsp", true);
+        xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        var queryString = "nombreST=" + (nombreST) + "&municipio=" + (municipio) + "&option=" + ("consultarSTporID") + "&nocache=" + Math.random();
+        xhttp.send(queryString);
+    });
+    $("body").on("click", "#contFilas #iconEliminar", function(event){
+        event.preventDefault();
+        $("body").css({'cursor':'wait'});
+        var fila = $(this).parent().parent();
+        var nombreST = fila.children("td:eq(0)").text();
+        var municipio = fila.children("td:eq(1)").text();
+        if (window.XMLHttpRequest) {  
+        // Navegadores que siguen los estándares
+            xhttp = new XMLHttpRequest();
+        }
+        else if (window.ActiveXObject) {  // Navegadores obsoletos
+            xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xhttp.onreadystatechange = function () {
+            if (xhttp.readyState == READY_STATE_COMPLETE && xhttp.status == OK) {
+                var mensaje = xhttp.responseText;
+                if(mensaje.indexOf("exito")>-1){
+                    window.location = "sitio_turistico.jsp";
+                }else{
+                    $("#msgRespuesta").css({
+                            'display':'block',
+                            'background': '#F2DEDE',
+                            'color': '#B94A48'
+                        });
+                    document.getElementById('msgRespuesta').innerHTML = mensaje;
+                }
+            }
+        }
+        xhttp.open("POST", "../back/procesar.jsp", true);
+        xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        var queryString = "nombreST=" + (nombreST) + "&municipio=" + (municipio) + "&option=" + ("eliminarST") + "&nocache=" + Math.random();
+        xhttp.send(queryString);
+    });
+}
+
+function buscarPorMunicipio(){
+    var municipio = document.getElementById('selMunicipio').value;
+    $("body").css({'cursor':'wait'});
+    if (window.XMLHttpRequest) {  
+    // Navegadores que siguen los estándares
+        xhttp = new XMLHttpRequest();
+    }
+    else if (window.ActiveXObject) {  // Navegadores obsoletos
+        xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+
+    xhttp.onreadystatechange = function () {
+        if (xhttp.readyState == READY_STATE_COMPLETE && xhttp.status == OK) {
+            var mensaje = xhttp.responseText;
+            $("#contFilas").remove();
+            cargaTablaST(mensaje);
+            escucharAccionOpcionesTablaST();
+            $("body").css({'cursor':'default'});
+        }
+    }
+    xhttp.open("POST", "../back/procesar.jsp", true);
+    xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    var queryString = "municipio=" + (municipio) + "&option=" + ("consultarSitioTuristicoPorMunicipio") + "&nocache=" + Math.random();
+    xhttp.send(queryString);
 }
 
 //FIN - metodos que interactuan con la base de datos
