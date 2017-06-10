@@ -77,12 +77,13 @@
                             <center><h1>Seleccione<br>el municipio de interés</h1></center>
                         </div>
                         <div class="select">
-                            <select name="municipios">
+                            <p id="msgEmergenteBusqueda" class="msgEmergente"></p>
+                            <select id="municipios" name="municipios">
                                 <option>Seleccione un municipio</option>
                             </select>
                         </div>
                         <div class="input2 margen-top">
-                            <input class="btn-secundario" type="button" value="Buscar sitios  turisticos">
+                            <input id="btn-buscar" class="btn-secundario" type="button" value="Buscar sitios turisticos">
                         </div>
                     </div>
                 </center>

@@ -35,9 +35,12 @@ function cargarScripts(){
     var miCuenta = window.location.pathname.indexOf("admin/mi_cuenta.jsp");
     var cuentasSistema = window.location.pathname.indexOf("admin/cuentas_sistema.jsp");
     var sitioTuristico = window.location.pathname.indexOf("admin/sitio_turistico.jsp");
+    var sitiosTuristicos = window.location.pathname.indexOf("sitios_turisticos.jsp");
     
     if(inicio >= 0){
+        cargaSelectorMunicipio("municipios");
         cargaScriptsBasicos();
+        cargarScriptsInicio();
     }else{
         if(registrarCuenta >= 0){
             cargaScriptsBasicos();
@@ -60,6 +63,10 @@ function cargarScripts(){
                             cargaScriptsBasicosLogueado();
                             cargarScriptsST();
                             cargarSelectores();
+                        }else{
+                            if(sitiosTuristicos >= 0){
+                                cargarScriptsSitiosTuristicos();
+                            }
                         }
                     }
                 }
@@ -92,6 +99,11 @@ function cargaScriptsBasicos(){
     
     var btnLogin = document.getElementById('btn-login');
     btnLogin.onclick = function(){login(1);};
+}
+
+function cargarScriptsInicio(){
+    var btnBuscar = document.getElementById('btn-buscar');
+    btnBuscar.onclick = function(){busquedaPrincipalSitios();};
 }
 
 function cargaScriptsRegistrarCuenta(){
@@ -165,6 +177,43 @@ function cargarScriptsST(){
     btnCancelar.onclick = function(){redirigir("","sitio_turistico.jsp")};
 }
 
+function cargarScriptsSitiosTuristicos(){
+    var btnInicio = document.getElementById('logo');
+    btnInicio.onclick = function(){redirigir("", "index.jsp");};
+    
+    var btnMRegistrar = document.getElementById('mRegistrar');
+    btnMRegistrar.onclick = function(){redirigir("", "registrar-cuenta.jsp");};
+    
+    var btnMenu1 = document.getElementById('iconMenu1');
+    btnMenu1.onclick = function(){desplegar("#sub-menu1");};
+    
+    var btnMenu2 = document.getElementById('iconMenu2');
+    btnMenu2.onclick = function(){desplegar("#sub-menu2");};
+    
+    var iconLogout = document.getElementById('smLogout');
+    iconLogout.onclick = function(){exit("cerrarSesion", "inicio.jsp");};
+    
+    var btnSMRegistrar = document.getElementById('smRegistrar');
+    btnSMRegistrar.onclick = function(){redirigir("", "registrar-cuenta.jsp");};
+    
+    var btnLogout = document.getElementById('m-logout');
+    btnLogout.onclick = function(){exit("cerrarSesion", "index.jsp");};
+    
+    var btnSMLogin = document.getElementById('subM-Login');
+    btnSMLogin.onclick = function(){desplegar('#login');};
+    
+    var btnMLogin = document.getElementById('m-login');
+    btnMLogin.onclick = function(){desplegar('#login2');};
+    
+    var btnLogin2 = document.getElementById('btn-login2');
+    btnLogin2.onclick = function(){login(2);};
+    
+    var btnLogin = document.getElementById('btn-login');
+    btnLogin.onclick = function(){login(1);};
+    
+    ajustarAltoDiv();
+}
+
 //FIN - carga scripts  del sitio
 
 /*
@@ -176,7 +225,7 @@ function desplegar(div){
 }
 
 function redirigir(opcion, pagina){
-    if(opcion != ""){
+    if(opcion !== ""){
         if (window.XMLHttpRequest) {  
         // Navegadores que siguen los estándares
             xhttp = new XMLHttpRequest();
@@ -190,6 +239,23 @@ function redirigir(opcion, pagina){
         xhttp.send(queryString);
     }
     window.location = pagina;
+}
+
+function exit(opcion, pagina){
+    if(opcion !== ""){
+        if (window.XMLHttpRequest) {  
+        // Navegadores que siguen los estándares
+            xhttp = new XMLHttpRequest();
+        }
+        else if (window.ActiveXObject) {  // Navegadores obsoletos
+            xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xhttp.open("POST", "back/procesar.jsp", true);
+        xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        var queryString = "option=" + (opcion) + "&nocache=" + Math.random();
+        xhttp.send(queryString);
+        window.location = pagina;
+    }
 }
 
 function verificarCorreoContraseña(correo, pass, msgCorreo, msgPass){
@@ -419,6 +485,32 @@ function respuestaSistema(){
             $("#msgRespuesta").fadeOut(6000);
             $("html, body").animate({scrollTop:"0px"});
     }
+}
+
+function ajustarAltoDiv(){
+    ajustarAltoDivTarjeta();
+    ajustarAltoContenedorPrincipal();
+}
+
+function ajustarAltoDivTarjeta(){
+    var anchoVentana = $(window).width();
+    if(anchoVentana > 767){
+        var alto = $("#descTarjeta").height();
+        $(".tarjeta").height(alto+20);
+    }
+}
+
+function ajustarAltoContenedorPrincipal(){
+    var anchoVentana = $(window).width();
+    var altoVentana = $(window).height();
+    if(anchoVentana > 1000){
+        $("#menu-lateral").height(altoVentana-69);
+        $("#contenedorST").height(altoVentana-122);
+    }else{
+        $("#menu-lateral").height(altoVentana);
+        $("#contenedorST").height(altoVentana);
+    }   
+    $("#contenedorST").css({'overflow-y':'scroll'});
 }
 
 //FIN - funciones que permiten la interaccion del sitio
@@ -902,6 +994,27 @@ function cargarSelectores(){
     xhttp.send(queryString);
 }
 
+function cargaSelectorMunicipio(IdSelector){
+    $("body").css({'cursor':'wait'});
+    if (window.XMLHttpRequest) {  
+    // Navegadores que siguen los estándares
+        xhttp = new XMLHttpRequest();
+    }
+    else if (window.ActiveXObject) {  // Navegadores obsoletos
+        xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xhttp.onreadystatechange = function () {
+        if (xhttp.readyState == READY_STATE_COMPLETE && xhttp.status == OK) {
+            var mensaje = xhttp.responseText;
+            agregarMunicipiosSelectores(IdSelector, mensaje);
+        }
+    }
+    xhttp.open("POST", "back/procesar.jsp", true);
+    xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    var queryString = "option=" + ("cargarSelectores") + "&nocache=" + Math.random();
+    xhttp.send(queryString);
+}
+
 function cargarTablaSitiosTuristicos(){
     $("body").css({'cursor':'wait'});
     if (window.XMLHttpRequest) {  
@@ -1028,5 +1141,16 @@ function buscarPorMunicipio(){
     var queryString = "municipio=" + (municipio) + "&option=" + ("consultarSitioTuristicoPorMunicipio") + "&nocache=" + Math.random();
     xhttp.send(queryString);
 }
+
+function busquedaPrincipalSitios(){
+    var selector = document.getElementById('municipios').value;
+    if(selector === "Seleccione un municipio"){
+        document.getElementById("msgEmergenteBusqueda").style.display = "block";
+        document.getElementById("msgEmergenteBusqueda").innerHTML = "Seleccione un municipio";
+    }else{
+        document.getElementById("msgEmergenteBusqueda").style.display = "none";
+        window.location = "sitios_turisticos.jsp?"+selector;
+    }
+} 
 
 //FIN - metodos que interactuan con la base de datos

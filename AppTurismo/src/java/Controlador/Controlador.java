@@ -224,6 +224,7 @@ public class Controlador {
         
         MunicipioDao md = new MunicipioDao(this.co);
         String mensaje = md.consultarMunicipios();
+        this.desconectar();
         return mensaje;
     }
     

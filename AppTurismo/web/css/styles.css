@@ -152,7 +152,7 @@ header{
     letter-spacing: 0.5px;
 }
 
-.btn-secundario:hover, .acciones ul li:hover{
+.btn-secundario:hover, .acciones ul li:hover, .menu-busquedas div ul li:hover{
     background: #328fd6;
     cursor: pointer;
 }
@@ -291,16 +291,50 @@ header{
     position: absolute;
 }
 
+.menu-busquedas{
+    width: 18%;
+    float: left;
+}
+
+.contenedor-busquedas{
+    width: 82%;
+    float: left;
+}
+
+.menu-busquedas div{
+    width: 100%;
+    color: #FFFFFF;
+    height: 600px;
+}
+
+.menu-busquedas span{
+    font-size: 20px;
+    margin-right: 10px;
+}
+
+.contenedor-busquedas{
+    width: 82%;
+    padding: 20px;
+}
+
+.smAccion{
+    display: none;
+}
+
+.menu-busquedas li{
+    text-align: center;
+}
+
 .acciones{
     width: 230px;
     display: none;
 }
 
-.acciones ul{
+.acciones ul, .menu-busquedas div ul{
     padding-top: 20px;
 }
 
-.acciones ul li{
+.acciones ul li, .menu-busquedas div ul li{
     padding: 12px 5px 12px 15px;
 }
 
@@ -385,6 +419,29 @@ legend{
     height: 200px;
 }
 
+.tarjeta{
+    width: 100%; 
+    background: white; 
+    border-radius: 5px;
+    padding: 7px;
+    -webkit-box-shadow: 0px 0px 15px -3px rgba(0,0,0,1);
+    -moz-box-shadow: 0px 0px 15px -3px rgba(0,0,0,1);
+    box-shadow: 0px 0px 15px -3px rgba(0,0,0,1);
+}
+
+.tituloDesc, .descripcionDesc{
+    margin-top: 15px;
+}
+
+.foto, .descTarjeta, .precioUrlTarjeta{
+    height: 200px;
+}
+
+.foto img{
+    width: 100%;
+    height: 100%;
+}
+
 @media screen and (min-width: 480px){
     .input2 input{
         width: 45%;
@@ -451,6 +508,32 @@ legend{
     .contenedor-acciones, .acciones{
         height: 600px;
     }
+    
+    .foto{
+        float: left;
+        width: 30%;
+    }
+    
+    .descTarjeta{
+        width: 70%;
+        float: left;
+        padding: 10px;   
+        margin-top: 0px;
+    }
+    
+    .tituloDesc{
+        margin-top: 0px;
+    }
+}
+
+@media screen and (min-width: 850px){
+    .smAccion{
+        display: initial;
+    }
+    
+    .menu-busquedas li{
+        text-align: initial;
+    }
 }
 
 @media screen and (min-width: 1100px){
@@ -501,6 +584,16 @@ legend{
     
     .muniOpcion{
         width: 40%;
+    }
+}
+
+@media screen and (min-width: 1300px){
+    .foto{
+        width: 25%;
+    }
+    
+    .descTarjeta{
+        width: 75%;
     }
 }
 
