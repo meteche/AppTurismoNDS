@@ -45,6 +45,7 @@ function cargarScripts(){
         if(registrarCuenta >= 0){
             cargaScriptsBasicos();
             cargaScriptsRegistrarCuenta();
+            cargaSelectorMunicipio("municipioLabora");
         }else{
             if(municipios >= 0){
                 cargaScriptsBasicosLogueado();
@@ -602,7 +603,11 @@ function iniciarSesion(correo, pass){
                 if(mensaje.indexOf('Administrador')>-1){
                     redirigir("", "admin/municipios.jsp");
                 }else{
-                    alert(mensaje);
+                    if(mensaje.indexOf('Empresa')>-1){
+                        redirigir("", "empresa/servicios.jsp");
+                    }else{
+                        alert(mensaje);
+                    }
                 }
             }
             $("#msgRespuesta").fadeOut(6000);
@@ -700,7 +705,47 @@ function registrarCuenta(tipoCuenta){
                             document.getElementById('msgEmergenteSelMun').innerHTML = "Seleccione un municipio";
                         }else{
                             document.getElementById('msgEmergenteSelMun').style.display = "none";
-                            alert("listo para enviar datos...");
+                            if (window.XMLHttpRequest) {  
+                            // Navegadores que siguen los estándares
+                                xhttp = new XMLHttpRequest();
+                            }
+                            else if (window.ActiveXObject) {  // Navegadores obsoletos
+                                xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                            }
+                            xhttp.onreadystatechange = function () {
+                                if (xhttp.readyState == READY_STATE_COMPLETE && xhttp.status == OK) {
+                                    var mensaje = xhttp.responseText;
+                                    if(mensaje.indexOf('exito')>-1){
+                                        $("#msgRespuesta").css({
+                                            'display':'block',
+                                            'background':'#DFF0D8',
+                                            'color': '#46884B'
+                                        });
+                                        document.getElementById('msgRespuesta').innerHTML = "El registro de la cuenta ha sido exitoso";
+                                        $(".campo1").val("");
+                                        $("#tipoEmpresa").val("");
+                                        $("#municipioLabora").val("");
+                                        $("#form-registroE").css({'display':'none'});
+                                    }else{
+                                        $("#msgRespuesta").css({
+                                                'display':'block',
+                                                'background': '#F2DEDE',
+                                                'color': '#B94A48'
+                                            });
+                                        if(mensaje.indexOf('Duplicate')>-1){
+                                            document.getElementById('msgRespuesta').innerHTML = "El correo ingresado ya existe";
+                                        }else{
+                                            document.getElementById('msgRespuesta').innerHTML = mensaje;
+                                        }
+                                    }
+                                    $("#msgRespuesta").fadeOut(6000);
+                                    $("html, body").animate({scrollTop:"0px"});
+                                }
+                            }
+                            xhttp.open("POST", "back/procesar.jsp", true);
+                            xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                            var queryString = "correo=" + (correoE) + "&password=" + (passE) + "&tipoCuenta=" + (tipoCuenta) + "&option=" + ("registrarCuenta") + "&nocache=" + Math.random();
+                            xhttp.send(queryString);
                         }
                     }
                 }else{

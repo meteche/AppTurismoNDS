@@ -115,28 +115,36 @@
                     <div id="form-registroE" class="form-registro">
                         <p id="msgEmergenteCorreoE" class="msgEmergente"></p>
                         <div class="input">
-                            <input id="correoE" type="text" placeholder="Correo">
+                            <input id="correoE" class="campo1" type="text" placeholder="Correo">
                         </div>
                         <p id="msgEmergentePassE" class="msgEmergente"></p>
                         <div class="input">
-                            <input id="passE" type="password" placeholder="Contraseña">
+                            <input id="passE" class="campo1" type="password" placeholder="Contraseña">
                         </div>
                         <p id="msgEmergenteVerPassE" class="msgEmergente"></p>
                         <div class="input">
-                            <input id="verpassE" type="password" placeholder="Verificar contraseña">
+                            <input id="verpassE" class="campo1" type="password" placeholder="Verificar contraseña">
                         </div>
                         <p id="msgEmergenteSelTipoEmp" class="msgEmergente"></p>
                         <div class="input">
                             <select id="tipoEmpresa" name="tipoEmpresa">
                                 <option>Tipo de empresa</option>
-                                <option>empresa  prueba</option>
+                                <option>Hospedaje</option>
+                                <option>Restaurantes, bares</option>
+                                <option>Ocio y diversion</option>
+                                <option>Transporte</option>
+                                <option>Deporte</option>
+                                <option>Naturaleza</option>
+                                <option>Cultura</option>
+                                <option>Espectaculo y negocio</option>
+                                <option>Espacios religiosos</option>
+                                <option>Servicios asistenciales</option>
                             </select>
                         </div>
                         <p id="msgEmergenteSelMun" class="msgEmergente"></p>
                         <div class="input">
                             <select id="municipioLabora" name="municipioLabora">
                                 <option>Municipio donde ofrece sus servicios</option>
-                                <option>municipio prueba</option>
                             </select>
                         </div>
                         <div class="input">
