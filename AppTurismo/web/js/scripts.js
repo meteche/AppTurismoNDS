@@ -36,6 +36,7 @@ function cargarScripts(){
     var cuentasSistema = window.location.pathname.indexOf("admin/cuentas_sistema.jsp");
     var sitioTuristico = window.location.pathname.indexOf("admin/sitio_turistico.jsp");
     var sitiosTuristicos = window.location.pathname.indexOf("sitios_turisticos.jsp");
+    var servicios = window.location.pathname.indexOf("empresa/servicios.jsp");
     
     if(inicio >= 0){
         cargaSelectorMunicipio("municipios");
@@ -68,6 +69,10 @@ function cargarScripts(){
                             if(sitiosTuristicos >= 0){
                                 cargarScriptsSitiosTuristicos();
                                 mostrarSitiosTuristicos();
+                            }else{
+                                if(servicios >= 0){
+                                    cargaScriptsBasicosLogueado();
+                                }
                             }
                         }
                     }
