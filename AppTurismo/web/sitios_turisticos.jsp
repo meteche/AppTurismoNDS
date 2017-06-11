@@ -44,7 +44,7 @@
                     <li id="iconMenu1" class="icon-menu"><span class="icon-bars"></span></li>
                 </ul>
             </div>
-            <div class="cuenta <%=ulLogueado%>">
+            <div id="barraLoguadoTurista" class="cuenta <%=ulLogueado%>">
                 <ul>
                     <li id="m-logout" class="subM">Cerrar Sesión</li>
                     <li id="iconMenu2" class="icon-menu"><span class="icon-bars"></span></li>
@@ -113,61 +113,8 @@
                     </div>
                 </div>
                 <div id="contenedorST" class="contenedor-busquedas">
-                    <h1>Sitios Turisticos: Ciudad</h1>
-                    <div id="tarjetaST" class="tarjeta margen-top">
-                        <div id="foto" class="foto">
-                            <img src="img/imagenNoDisponible.png">
-                        </div>
-                        <div id="descTarjeta" class="descTarjeta">
-                            <h3 class="tituloDesc">El patio de mi casa</h3>
-                            <div class="descripcionDesc">Descripcion</div>
-                        </div>
-                    </div>
-                    <div id="tarjetaST" class="tarjeta margen-top">
-                        <div id="foto" class="foto">
-                            <img src="img/imagenNoDisponible.png">
-                        </div>
-                        <div id="descTarjeta" class="descTarjeta">
-                            <h3 class="tituloDesc">El patio de mi casa</h3>
-                            <div class="descripcionDesc">Descripcion</div>
-                        </div>
-                    </div>
-                    <div id="tarjetaST" class="tarjeta margen-top">
-                        <div id="foto" class="foto">
-                            <img src="img/imagenNoDisponible.png">
-                        </div>
-                        <div id="descTarjeta" class="descTarjeta">
-                            <h3 class="tituloDesc">El patio de mi casa</h3>
-                            <div class="descripcionDesc">Descripcion</div>
-                        </div>
-                    </div>
-                    <div id="tarjetaST" class="tarjeta margen-top">
-                        <div id="foto" class="foto">
-                            <img src="img/imagenNoDisponible.png">
-                        </div>
-                        <div id="descTarjeta" class="descTarjeta">
-                            <h3 class="tituloDesc">El patio de mi casa</h3>
-                            <div class="descripcionDesc">Descripcion</div>
-                        </div>
-                    </div>
-                    <div id="tarjetaST" class="tarjeta margen-top">
-                        <div id="foto" class="foto">
-                            <img src="img/imagenNoDisponible.png">
-                        </div>
-                        <div id="descTarjeta" class="descTarjeta">
-                            <h3 class="tituloDesc">El patio de mi casa</h3>
-                            <div class="descripcionDesc">Descripcion</div>
-                        </div>
-                    </div>
-                    <div id="tarjetaST" class="tarjeta margen-top">
-                        <div id="foto" class="foto">
-                            <img src="img/imagenNoDisponible.png">
-                        </div>
-                        <div id="descTarjeta" class="descTarjeta">
-                            <h3 class="tituloDesc">El patio de mi casa</h3>
-                            <div class="descripcionDesc">Descripcion</div>
-                        </div>
-                    </div>
+                    <h1>Sitios Turisticos: <em id="tituloMS"></em></h1>
+                    
                 </div>
             </div>
         </div>

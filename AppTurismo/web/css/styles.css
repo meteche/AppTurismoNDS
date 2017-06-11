@@ -433,13 +433,18 @@ legend{
     margin-top: 15px;
 }
 
-.foto, .descTarjeta, .precioUrlTarjeta{
+.foto, .precioUrlTarjeta{
     height: 200px;
 }
 
 .foto img{
     width: 100%;
     height: 100%;
+}
+
+.centrarContenido{
+    text-align: center;
+    padding: 10px;
 }
 
 @media screen and (min-width: 480px){

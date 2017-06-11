@@ -4,6 +4,7 @@
     Author     : Ruben D
 --%>
 
+<%@page import="java.util.Random"%>
 <%@page import="javazoom.upload.UploadException"%>
 <%@page import="javazoom.upload.UploadFile"%>
 <%@page import="java.util.Hashtable"%>
@@ -71,7 +72,8 @@
                          */
                         if (file != null) {
                             if(file.getFileName()!=null){
-                                file.setFileName(nombreST+municipio+".jpg");
+                                Random rnd = new Random();
+                                file.setFileName(rnd.nextLong()+".jpg");
                             }
                             upBean.store(mrequest, "uploadfile");
                             imagen = file.getFileName();

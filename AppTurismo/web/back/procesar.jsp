@@ -100,6 +100,9 @@
                                                         if (request.getParameter("option").equals("consultarSitioTuristicoPorMunicipio")) {
                                                             String municipio = request.getParameter("municipio");
                                                             rta = Controlador.consultarSitioTuristicoPorMunicipio(municipio);
+                                                            if(rta.equals("")){
+                                                                rta = "sinRespuesta";
+                                                            }
                                                             System.out.println(rta);
                                                             out.print(rta);
                                                         }else{

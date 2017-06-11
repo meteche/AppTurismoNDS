@@ -110,14 +110,16 @@ public class SitioTuristicoDao {
     public String consultarSitioTuristicoPorMunicipio(SitioTuristico st) {
         String msg = "";
         try {
-            this.ps = this.co.prepareStatement("SELECT nombre, MUNICIPIOS_nombre FROM SITIOSTURISTICOS WHERE MUNICIPIOS_nombre = ?;");
+            this.ps = this.co.prepareStatement("SELECT nombre, MUNICIPIOS_nombre, descripcion, imagen FROM SITIOSTURISTICOS WHERE MUNICIPIOS_nombre = ?;");
             this.ps.setString(1, st.getMunicipio());
             rs = ps.executeQuery();
-
+            ResultSet copia = rs;
             if (rs != null) {
                 while (rs.next()) {
                     msg += rs.getString(1)+"-";
-                    msg += rs.getString(2)+"/";
+                    msg += rs.getString(2)+"-";
+                    msg += rs.getString(3)+"-";
+                    msg += rs.getString(4)+"/";
                 }
             }
         } catch (Exception e) {

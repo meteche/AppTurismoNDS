@@ -66,6 +66,7 @@ function cargarScripts(){
                         }else{
                             if(sitiosTuristicos >= 0){
                                 cargarScriptsSitiosTuristicos();
+                                mostrarSitiosTuristicos();
                             }
                         }
                     }
@@ -211,7 +212,7 @@ function cargarScriptsSitiosTuristicos(){
     var btnLogin = document.getElementById('btn-login');
     btnLogin.onclick = function(){login(1);};
     
-    ajustarAltoDiv();
+    //ajustarAltoDiv();
 }
 
 //FIN - carga scripts  del sitio
@@ -494,9 +495,9 @@ function ajustarAltoDiv(){
 
 function ajustarAltoDivTarjeta(){
     var anchoVentana = $(window).width();
-    if(anchoVentana > 767){
-        var alto = $("#descTarjeta").height();
-        $(".tarjeta").height(alto+20);
+    if(anchoVentana >= 750){
+        var alto = $("#foto").height();
+        $(".tarjeta").height(alto);
     }
 }
 
@@ -511,6 +512,45 @@ function ajustarAltoContenedorPrincipal(){
         $("#contenedorST").height(altoVentana);
     }   
     $("#contenedorST").css({'overflow-y':'scroll'});
+}
+
+function cargaST(mensaje){
+    
+    var losDatos = mensaje.split("/");
+    
+    var contenedorTarjetas = document.getElementById('contenedorST');
+    
+    for(var i=0; i<(losDatos.length - 1); i++){
+        
+        var datos = losDatos[i].split("-");
+        
+        var tarjetaST = document.createElement('div');
+        var foto = document.createElement('div');
+        var descTarjeta = document.createElement('div');
+        var imagen = document.createElement('img');
+        var tituloDesc = document.createElement('h3');
+        var descripcionDesc = document.createElement('div');
+        
+        imagen.setAttribute("src","imagenesBD/"+datos[3]);
+        foto.appendChild(imagen);
+        foto.setAttribute("id","foto");
+        foto.setAttribute("class","foto");
+        tituloDesc.setAttribute("class","tituloDesc");
+        tituloDesc.innerHTML = datos[0];
+        descripcionDesc.setAttribute("class","descripcionDesc");
+        descripcionDesc.innerHTML = datos[2];
+        descTarjeta.appendChild(tituloDesc);
+        descTarjeta.appendChild(descripcionDesc);
+        descTarjeta.setAttribute("id","descTarjeta");
+        descTarjeta.setAttribute("class","descTarjeta");
+        tarjetaST.appendChild(foto);
+        tarjetaST.appendChild(descTarjeta);
+        tarjetaST.setAttribute("id","tarjetaST");
+        tarjetaST.setAttribute("class","tarjeta margen-top");
+        
+        contenedorTarjetas.appendChild(tarjetaST);
+    }
+    ajustarAltoDiv();
 }
 
 //FIN - funciones que permiten la interaccion del sitio
@@ -1152,5 +1192,42 @@ function busquedaPrincipalSitios(){
         window.location = "sitios_turisticos.jsp?"+selector;
     }
 } 
+
+function mostrarSitiosTuristicos(){
+    var url = window.location+"";
+    var urldecode = decodeURIComponent(url);
+    var municipio = urldecode.split("?");
+    document.getElementById("tituloMS").innerHTML = municipio[1];
+    
+    $("body").css({'cursor':'wait'});
+    if (window.XMLHttpRequest) {  
+    // Navegadores que siguen los estándares
+        xhttp = new XMLHttpRequest();
+    }
+    else if (window.ActiveXObject) {  // Navegadores obsoletos
+        xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+
+    xhttp.onreadystatechange = function () {
+        if (xhttp.readyState == READY_STATE_COMPLETE && xhttp.status == OK) {
+            var mensaje = xhttp.responseText;
+            //$("#contFilas").remove();
+            if(mensaje.indexOf("sinRespuesta")>-1){
+                var contenedor = document.getElementById('contenedorST');
+                var vacio = document.createElement('div');
+                vacio.innerHTML = "No exite ningun sitio turistico registrado";
+                vacio.setAttribute("class","tarjeta margen-top centrarContenido");
+                contenedor.appendChild(vacio);
+            }else{
+                cargaST(mensaje);
+            }
+            $("body").css({'cursor':'default'});
+        }
+    }
+    xhttp.open("POST", "back/procesar.jsp", true);
+    xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    var queryString = "municipio=" + (municipio[1]) + "&option=" + ("consultarSitioTuristicoPorMunicipio") + "&nocache=" + Math.random();
+    xhttp.send(queryString);
+}
 
 //FIN - metodos que interactuan con la base de datos
