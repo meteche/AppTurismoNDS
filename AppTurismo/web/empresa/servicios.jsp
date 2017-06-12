@@ -85,12 +85,12 @@
                         </div>
                     </div>
                     <div class="muniOpcion">
-                        <form id="form-regST" method="POST" action="../back/subir.jsp" enctype="multipart/form-data">
+                        <form id="form-regS" method="POST" action="../back/subir2.jsp" enctype="multipart/form-data">
                             <div>
                                 <legend>Servicios</legend>
                             </div>
                             <div  class="input">
-                                <input id="correoEmpresa" name="correoEmpresa" class="ocultar" type="text">
+                                <input id="correoEmpresa" name="correoEmpresa" type="text" class="ocultar" value="<%=correoL%>">
                                 <input id="accion" name="accion" class="ocultar" type="text" value="cr">
                             </div>
                             <p id="msgEmergenteS" class="msgEmergente"></p>
@@ -118,8 +118,8 @@
                                 <input id="imgCargada" name="imgCargada" class="ocultar" type="text">
                             </div>
                             <div  class="inputBtn centrar">
-                                <input id="btn-crearSitioTuristico" class="btn-primario" type="submit" value="Crear">
-                                <input id="btn-modificarSitioTuristico" class="btn-primario ocultar" type="submit" value="Modificar">
+                                <input id="btn-crearServicio" class="btn-primario" type="submit" value="Crear">
+                                <input id="btn-modificarServicio" class="btn-primario ocultar" type="submit" value="Modificar">
                                 <input id="btn-cancelar" class="btn-primario ocultar margen-top" type="button" value="Cancelar">
                             </div>
                         </form>

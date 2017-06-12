@@ -37,6 +37,7 @@ function cargarScripts(){
     var sitioTuristico = window.location.pathname.indexOf("admin/sitio_turistico.jsp");
     var sitiosTuristicos = window.location.pathname.indexOf("sitios_turisticos.jsp");
     var servicios = window.location.pathname.indexOf("empresa/servicios.jsp");
+    var miCuentaEmpresa = window.location.pathname.indexOf("empresa/mi_cuenta.jsp");
     
     if(inicio >= 0){
         cargaSelectorMunicipio("municipios");
@@ -71,7 +72,13 @@ function cargarScripts(){
                                 mostrarSitiosTuristicos();
                             }else{
                                 if(servicios >= 0){
-                                    cargaScriptsBasicosLogueado();
+                                    cargaScriptsBasicosEmpresaLogueada();
+                                    cargarScriptsServicios();
+                                }else{
+                                   if(miCuentaEmpresa >= 0){
+                                        cargaScriptsBasicosEmpresaLogueada();
+                                        cargarScriptsEmpresa();
+                                    } 
                                 }
                             }
                         }
@@ -158,6 +165,30 @@ function cargaScriptsBasicosLogueado(){
     btnMSitioTuristico.onclick = function(){redirigir("", "sitio_turistico.jsp");};
 }
 
+function cargaScriptsBasicosEmpresaLogueada(){
+    
+    var btnInicio = document.getElementById('logo');
+    btnInicio.onclick = function(){redirigir("", "../index.jsp");};
+    
+    var btnLogout = document.getElementById('m-logout');
+    btnLogout.onclick = function(){redirigir("cerrarSesion", "../index.jsp");};
+    
+    var btnMostrarMenuLateral = document.getElementById('mostrarMenu');
+    btnMostrarMenuLateral.onclick = function(){desplegar("#contenedor-acciones");desplegar("#acciones");};
+    
+    var btnMenu = document.getElementById('iconMenu');
+    btnMenu.onclick = function(){desplegar('#sub-menu');};
+    
+    var iconLogout = document.getElementById('smLogout');
+    iconLogout.onclick = function(){redirigir("cerrarSesion", "../index.jsp");};
+    
+    var btnMMiCuenta = document.getElementById('m-miCuenta');
+    btnMMiCuenta.onclick = function(){redirigir("", "mi_cuenta.jsp");};
+    
+    var btnMServicios = document.getElementById('m-servicios');
+    btnMServicios.onclick = function(){redirigir("", "servicios.jsp");};
+}
+
 function cargaScriptsMunicipios(){
     
     var btnCrearMunicipio = document.getElementById('btn-crearMunicipio');
@@ -219,6 +250,23 @@ function cargarScriptsSitiosTuristicos(){
     btnLogin.onclick = function(){login(1);};
     
     //ajustarAltoDiv();
+}
+
+function cargarScriptsServicios(){
+    respuestaSistema();
+    
+    var btnCrearServicio = document.getElementById('btn-crearServicio');
+    btnCrearServicio.onclick = function(){registrarServicio();};
+}
+
+function cargarScriptsEmpresa(){
+    cargaSelectorMunicipio2("selMuniSitioTuristico");
+    
+    var btnGuardarCambios = document.getElementById('btn-guardarCambios');
+    btnGuardarCambios.onclick = function(){actualizarInfoEmpresa();};
+    
+    var btnModContraseña = document.getElementById('btn-guardarCambiosAcceso');
+    btnModContraseña.onclick = function(){modificarCuenta();};
 }
 
 //FIN - carga scripts  del sitio
@@ -683,7 +731,7 @@ function registrarCuenta(tipoCuenta){
                 }
                 xhttp.open("POST", "back/procesar.jsp", true);
                 xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                var queryString = "correo=" + (correo) + "&password=" + (pass) + "&tipoCuenta=" + (tipoCuenta) + "&option=" + ("registrarCuenta") + "&nocache=" + Math.random();
+                var queryString = "correo=" + (correo) + "&password=" + (pass) + "&tipoCuenta=" + (tipoCuenta) + "&tipoEmpresa=" + (tipoEmpresa) + "&option=" + ("registrarCuenta") + "&nocache=" + Math.random();
                 xhttp.send(queryString);
             }else{
                 document.getElementById('msgEmergenteVerPassT').style.display = "block";
@@ -730,6 +778,8 @@ function registrarCuenta(tipoCuenta){
                                         $(".campo1").val("");
                                         $("#tipoEmpresa").val("");
                                         $("#municipioLabora").val("");
+                                        $("#tipoEmpresa").val("Tipo de empresa");
+                                        $("#municipioLabora").val("Municipio donde ofrece sus servicios");
                                         $("#form-registroE").css({'display':'none'});
                                     }else{
                                         $("#msgRespuesta").css({
@@ -749,7 +799,7 @@ function registrarCuenta(tipoCuenta){
                             }
                             xhttp.open("POST", "back/procesar.jsp", true);
                             xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                            var queryString = "correo=" + (correoE) + "&password=" + (passE) + "&tipoCuenta=" + (tipoCuenta) + "&option=" + ("registrarCuenta") + "&nocache=" + Math.random();
+                            var queryString = "correo=" + (correoE) + "&password=" + (passE) + "&tipoCuenta=" + (tipoCuenta) + "&tipoEmpresa=" + (tipoEmpresa) + "&option=" + ("registrarCuenta") + "&nocache=" + Math.random();
                             xhttp.send(queryString);
                         }
                     }
@@ -758,7 +808,6 @@ function registrarCuenta(tipoCuenta){
                     document.getElementById('msgEmergenteVerPassE').innerHTML = "La contraseña es diferente";
                 }
             }
-
         }
     }
 }
@@ -1105,6 +1154,28 @@ function cargaSelectorMunicipio(IdSelector){
     xhttp.send(queryString);
 }
 
+function cargaSelectorMunicipio2(IdSelector){
+    $("body").css({'cursor':'wait'});
+    if (window.XMLHttpRequest) {  
+    // Navegadores que siguen los estándares
+        xhttp = new XMLHttpRequest();
+    }
+    else if (window.ActiveXObject) {  // Navegadores obsoletos
+        xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xhttp.onreadystatechange = function () {
+        if (xhttp.readyState == READY_STATE_COMPLETE && xhttp.status == OK) {
+            var mensaje = xhttp.responseText;
+            agregarMunicipiosSelectores(IdSelector, mensaje);
+            cargarInformacionEmpresa();
+        }
+    }
+    xhttp.open("POST", "../back/procesar.jsp", true);
+    xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    var queryString = "option=" + ("cargarSelectores") + "&nocache=" + Math.random();
+    xhttp.send(queryString);
+}
+
 function cargarTablaSitiosTuristicos(){
     $("body").css({'cursor':'wait'});
     if (window.XMLHttpRequest) {  
@@ -1278,6 +1349,139 @@ function mostrarSitiosTuristicos(){
     xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     var queryString = "municipio=" + (municipio[1]) + "&option=" + ("consultarSitioTuristicoPorMunicipio") + "&nocache=" + Math.random();
     xhttp.send(queryString);
+}
+
+function registrarServicio(){
+    
+    $("#form-regS").submit(function() {      
+        if(document.getElementById('nombreS').value === ""){
+            document.getElementById("msgEmergenteS").style.display = "block";
+            document.getElementById("msgEmergenteS").innerHTML = "Ingrese el nombre del servicio";
+            return false;
+        }else{
+            document.getElementById("msgEmergenteS").style.display = "none";
+            if(document.getElementById('precioS').value === ""){
+                document.getElementById("msgEmergentePrecio").style.display = "block";
+                document.getElementById("msgEmergentePrecio").innerHTML = "Ingrese un valor";
+                return false;
+            }else{
+                document.getElementById("msgEmergentePrecio").style.display = "none";
+                if(document.getElementById('txtDesc').value === ""){
+                    document.getElementById("msgEmergenteDescS").style.display = "block";
+                    document.getElementById("msgEmergenteDescS").innerHTML = "Ingrese un valor";
+                    return false;
+                }else{
+                    document.getElementById("msgEmergenteDescS").style.display = "none";
+                    if(document.getElementById('urlS').value === ""){
+                        document.getElementById("msgEmergenteUrl").style.display = "block";
+                        document.getElementById("msgEmergenteUrl").innerHTML = "Ingrese la url del sitio web donde se encuentra publicado el servicio";
+                        return false;
+                    }else{
+                        document.getElementById("msgEmergenteUrl").style.display = "none";
+                        return true;
+                    }
+                }
+            }
+        }
+    });
+}
+
+function cargarInformacionEmpresa(){
+    $("body").css({'cursor':'wait'});
+    var correo = document.getElementById('correoVer').value;
+    
+    if (window.XMLHttpRequest) {  
+    // Navegadores que siguen los estándares
+        xhttp = new XMLHttpRequest();
+    }
+    else if (window.ActiveXObject) {  // Navegadores obsoletos
+        xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+
+    xhttp.onreadystatechange = function () {
+        if (xhttp.readyState == READY_STATE_COMPLETE && xhttp.status == OK) {
+            var mensaje = xhttp.responseText;
+            
+            var datos = mensaje.split("&");
+            
+            if(datos[8].indexOf("vacio")<=-1){
+                $("#nombreEmp").val(datos[8]);
+            }
+            if(datos[1].indexOf("vacio")<=-1){
+                $("#selMuniSitioTuristico").val(datos[1]);
+            }
+            if(datos[2].indexOf("vacio")<=-1){
+                $("#tipoDeEmpresa").val(datos[2]);
+            }
+            if(datos[3].indexOf("vacio")<=-1){
+                $("#txtDesc").val(datos[6]);
+            }
+            if(datos[4].indexOf("vacio")<=-1){
+                $("#telEmpresa").val(datos[3]);
+            }
+            if(datos[5].indexOf("vacio")<=-1){
+                $("#dirEmpresa").val(datos[4]);
+            }
+            if(datos[6].indexOf("vacio")<=-1){
+                $("#imgCargada").val(datos[5]);
+                $("#img").val(datos[5]);
+            }
+            $("body").css({'cursor':'default'});
+        }
+    }
+    xhttp.open("POST", "../back/procesar.jsp", true);
+    xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    var queryString = "correo=" + (correo) + "&option=" + ("consultarEmpresa") + "&nocache=" + Math.random();
+    xhttp.send(queryString);
+}
+
+function actualizarInfoEmpresa(){
+    
+    $("#form-regS").submit(function() {
+        if(document.getElementById('nombreEmp').value === ""){
+            document.getElementById("msgEmergenteNombreE").style.display = "block";
+            document.getElementById("msgEmergenteNombreE").innerHTML = "Ingrese el nombre de la empresa";
+            return false;
+        }else{
+            document.getElementById("msgEmergenteNombreE").style.display = "none";
+            if(document.getElementById('selMuniSitioTuristico').value === "Municipio donde se encuntra ubicado"){
+                document.getElementById("msgEmergenteSelMunEmp").style.display = "block";
+                document.getElementById("msgEmergenteSelMunEmp").innerHTML = "Selecciones el municipio donde va a ofertar sus servicios";
+                return false;
+            }else{
+                document.getElementById("msgEmergenteSelMunEmp").style.display = "none";
+                if(document.getElementById('tipoDeEmpresa').value === "Tipo de empresa"){
+                    document.getElementById("msgEmergenteSelTipoE").style.display = "block";
+                    document.getElementById("msgEmergenteSelTipoE").innerHTML = "Selecciones el tipo de empresa";
+                    return false;
+                }else{
+                    document.getElementById("msgEmergenteSelTipoE").style.display = "none";
+                    if(document.getElementById('txtDesc').value === ""){
+                        document.getElementById("msgEmergenteDescEmpresa").style.display = "block";
+                        document.getElementById("msgEmergenteDescEmpresa").innerHTML = "Ingrese una descripción";
+                        return false;
+                    }else{
+                        document.getElementById("msgEmergenteDescEmpresa").style.display = "none";
+                        if(document.getElementById('telEmpresa').value === ""){
+                            document.getElementById("msgEmergenteTelEmp").style.display = "block";
+                            document.getElementById("msgEmergenteTelEmp").innerHTML = "Ingrese un telefono";
+                            return false;
+                        }else{
+                            document.getElementById("msgEmergenteTelEmp").style.display = "none";
+                            if(document.getElementById('dirEmpresa').value === ""){
+                                document.getElementById("msgEmergenteDir").style.display = "block";
+                                document.getElementById("msgEmergenteDir").innerHTML = "Ingrese una direccion";
+                                return false;
+                            }else{
+                                document.getElementById("msgEmergenteDir").style.display = "none";
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    });
 }
 
 //FIN - metodos que interactuan con la base de datos

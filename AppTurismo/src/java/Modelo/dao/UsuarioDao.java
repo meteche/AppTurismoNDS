@@ -47,4 +47,54 @@ public class UsuarioDao {
         }
         return msg;
     }
+    
+    public String modificarEmpresa(Usuario u) {
+        String msg = "exito";
+        try {
+            this.ps = this.co.prepareStatement("UPDATE USUARIOS SET nombre = ?  WHERE CUENTAS_correo = ?");
+            this.ps.setString(1, u.getNombre());
+            this.ps.setString(2, u.getCorreo());
+            
+            this.ps.execute();
+
+        } catch (Exception e) {
+            msg = "error: ERROR EN EL DAO:: " + e.getMessage();
+            System.out.println("ERROR EN EL DAO:: " + e.getMessage());
+        } finally {
+            try {
+                this.ps.close();
+                this.ps = null;
+            } catch (SQLException ex) {
+                Logger.getLogger(CuentaDao.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return msg;
+    }
+    
+    public String consultarUsuario(Usuario u) {
+        String msg = "";
+        try {
+            this.ps = this.co.prepareStatement("SELECT CUENTAS_correo, nombre FROM USUARIOS WHERE CUENTAS_correo = ?;");
+            this.ps.setString(1, u.getCorreo());
+            rs = ps.executeQuery();
+
+            if (rs != null) {
+                while (rs.next()) {
+                    msg += rs.getString(1)+"&";
+                    msg += rs.getString(2);
+                }
+            }
+        } catch (Exception e) {
+            msg = "ERROR EN EL DAO:: " + e.getMessage();
+            System.out.println("ERROR EN EL DAO:: " + e.getMessage());
+        } finally {
+            try {
+                this.ps.close();
+                this.ps = null;
+            } catch (SQLException ex) {
+                Logger.getLogger(CuentaDao.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return msg;
+    }
 }

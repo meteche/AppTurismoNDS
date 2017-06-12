@@ -13,7 +13,9 @@
         String correo = request.getParameter("correo");
         String password = request.getParameter("password");
         String tipoCuenta = request.getParameter("tipoCuenta");
-        rta = Controlador.agregarCuenta(correo, password, tipoCuenta);
+        String tipoEmpresa = request.getParameter("tipoEmpresa");
+        System.out.println(tipoEmpresa);
+        rta = Controlador.agregarCuenta(correo, password, tipoCuenta, tipoEmpresa);
         System.out.println(rta);
         out.print(rta);
     }else{
@@ -112,6 +114,22 @@
                                                                 rta = Controlador.eliminarSitioTuristico(nombre, municipio);
                                                                 System.out.println(rta);
                                                                 out.print(rta);
+                                                            }else{
+                                                                if (request.getParameter("option").equals("consultarEmpresa")) {
+                                                                    String correo = request.getParameter("correo");
+                                                                    rta = Controlador.consultarEmpresaPorID(correo);
+                                                                    String[] tratarCamposVacios = rta.split("&");
+                                                                    rta="";
+                                                                    for(int i=0;i<tratarCamposVacios.length;i++){
+                                                                        if(tratarCamposVacios[i].equals("null")){
+                                                                            rta += "vacio&";
+                                                                        }else{
+                                                                            rta += tratarCamposVacios[i]+"&";
+                                                                        }
+                                                                    }
+                                                                    System.out.println(rta);
+                                                                    out.print(rta);
+                                                                }
                                                             }
                                                         }
                                                     }

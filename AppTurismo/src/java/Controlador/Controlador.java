@@ -7,10 +7,12 @@ package Controlador;
 
 import Modelo.Conexion;
 import Modelo.dao.CuentaDao;
+import Modelo.dao.EmpresaDao;
 import Modelo.dao.MunicipioDao;
 import Modelo.dao.SitioTuristicoDao;
 import Modelo.dao.UsuarioDao;
 import Modelo.dto.Cuenta;
+import Modelo.dto.Empresa;
 import Modelo.dto.Municipio;
 import Modelo.dto.SitioTuristico;
 import Modelo.dto.Usuario;
@@ -68,7 +70,7 @@ public class Controlador {
         return msg;
     }
     
-    public String agregarCuenta(String correo, String password, String tipoCuenta) {
+    public String agregarCuenta(String correo, String password, String tipoCuenta, String tipoEmpresa) {
         Cuenta c = new Cuenta();
         Usuario u = new Usuario();
         String mensaje = "";
@@ -89,8 +91,21 @@ public class Controlador {
         
         String mensaje1 = cd.agregarCuenta(c);
         String mensaje2 = ud.agregarUsuario(u);
+        String mensaje3 = "";
+        
+        if(tipoCuenta.equals("Empresa")){
+            Empresa em = new Empresa();
+            
+            em.setCorreo(correo);
+            em.setTipoEmpresa(tipoEmpresa);
+            
+            EmpresaDao emd = new EmpresaDao(this.co);
+            mensaje3 = emd.agregarEmpresa(em);
+        }else{
+            
+        }
 
-        if (mensaje1.indexOf("error")>-1 || mensaje2.indexOf("error")>-1) {
+        if (mensaje1.indexOf("error")>-1 || mensaje2.indexOf("error")>-1 || mensaje3.indexOf("error")>-1) {
             try {
                 System.err.println(mensaje1);
                 System.err.println(mensaje2);
@@ -423,6 +438,69 @@ public class Controlador {
             try {
                 co.rollback();
                 mensaje = "Ha ocurrido un error a la hora de eliminar el sitio turistico.";
+            } catch (SQLException ex) {
+                Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            try {
+                co.commit();
+            } catch (SQLException ex) {
+                Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        this.desconectar();
+        return mensaje;
+    }
+    
+    public String consultarEmpresaPorID(String correo){
+        Empresa em = new Empresa();
+        Usuario u = new Usuario();
+        String mensaje = "";
+        
+        u.setCorreo(correo);
+        em.setCorreo(correo);
+        this.conectar();
+
+        EmpresaDao emd = new EmpresaDao(this.co);
+        String mensaje1 = emd.consultarEmpresaPorID(em);
+        UsuarioDao ud = new UsuarioDao(this.co);
+        String mensaje2 = ud.consultarUsuario(u);
+        mensaje = mensaje1+"&"+mensaje2;
+        return mensaje ;
+    }
+    
+    public String modificarEmpresa(String correo, String nombre, String municipio, String tipoEmp, String descripcion, String telefono, String direccion, String imagen) {
+        String mensaje = "exito";
+        Empresa em = new Empresa();
+        Usuario u = new Usuario();
+        
+        em.setCorreo(correo);
+        em.setMunicipio(municipio);
+        em.setTipoEmpresa(tipoEmp);
+        em.setDescripcion(descripcion);
+        em.setTelefono(telefono);
+        em.setDireccion(direccion);
+        em.setImagen(imagen);
+        
+        u.setNombre(nombre);
+        u.setCorreo(correo);
+        
+        this.conectar();
+        try {
+            this.co.setAutoCommit(false);
+        } catch (SQLException ex) {
+            Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        EmpresaDao emd = new EmpresaDao(this.co);
+        String mensaje1 = emd.modificarEmpresa(em);
+        
+        UsuarioDao ud = new UsuarioDao(this.co);
+        String mensaje2 = ud.modificarEmpresa(u);
+
+        if (mensaje1.equals("error") || mensaje2.equals("error")) {
+            try {
+                co.rollback();
+                mensaje = "error";
             } catch (SQLException ex) {
                 Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
             }
