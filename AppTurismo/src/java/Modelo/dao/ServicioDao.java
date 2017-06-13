@@ -5,6 +5,7 @@
  */
 package Modelo.dao;
 
+import Modelo.dto.Empresa;
 import Modelo.dto.Servicio;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -100,6 +101,39 @@ public class ServicioDao {
                     msg += rs.getString(4)+"&";
                     msg += rs.getString(5)+"&";
                     msg += rs.getString(6);
+                }
+            }
+        } catch (Exception e) {
+            msg = "ERROR EN EL DAO:: " + e.getMessage();
+            System.out.println("ERROR EN EL DAO:: " + e.getMessage());
+        } finally {
+            try {
+                this.ps.close();
+                this.ps = null;
+            } catch (SQLException ex) {
+                Logger.getLogger(CuentaDao.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return msg;
+    }
+    
+    public String consultarServicioPorEmpresaMunicipio(Empresa em) {
+        String msg = "";
+        try {
+            this.ps = this.co.prepareStatement("SELECT s.imagen, s.nombre, s.descripcion,  s.precio, s.url, u.nombre FROM SERVICIOS s INNER JOIN EMPRESAS e ON e.USUARIOS_Cuentas_correo = s.EMPRESAS_Usuarios_Cuentas_correo INNER JOIN USUARIOS u ON e.USUARIOS_Cuentas_correo = CUENTAS_correo WHERE e.MUNICIPIOS_nombre = ? AND e.tipo = ?;");
+            this.ps.setString(1, em.getMunicipio());
+            this.ps.setString(2, em.getTipoEmpresa());
+            
+            rs = ps.executeQuery();
+
+            if (rs != null) {
+                while (rs.next()) {
+                    msg += rs.getString(1)+"&";
+                    msg += rs.getString(2)+"&";
+                    msg += rs.getString(3)+"&";
+                    msg += rs.getString(4)+"&";
+                    msg += rs.getString(5)+"&";
+                    msg += rs.getString(6)+"/";
                 }
             }
         } catch (Exception e) {

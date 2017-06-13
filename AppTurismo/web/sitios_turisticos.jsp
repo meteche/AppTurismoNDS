@@ -95,17 +95,17 @@
                 </div>
             </div>
             
-            <div class="container">
+            <div id="container" class="container">
                 <div class="menu-busquedas">
                     <div id="menu-lateral" class="colTransFuerte">
                         <ul>
-                            <li><span class="icon-home"></span><label class="smAccion">Hospedaje</label></li>
-                            <li><span class="icon-food"></span><label class="smAccion">Restaurantes, bares</label></li>
-                            <li><span class="icon-child"></span><label class="smAccion">Ocio y diversion</label></li>
-                            <li><span class="icon-bus"></span><label class="smAccion">Transporte</label></li>
-                            <li><span class="icon-futbol-o"></span><label class="smAccion">Deporte</label></li>
-                            <li><span class="icon-calendar"></span><label class="smAccion">Espectaculo y negocio</label></li>
-                            <li><span class="icon-ambulance"></span><label class="smAccion">Servicios asistenciales</label></li>
+                            <li id="mHospejade"><span class="icon-home"></span><label id="txtHospedaje" class="smAccion">Hospedaje</label></li>
+                            <li id="mRestaurantes"><span class="icon-food"></span><label id="txtRestaurantes" class="smAccion">Restaurantes, bares</label></li>
+                            <li id="mOcio"><span class="icon-child"></span><label id="txtOcio" class="smAccion">Ocio y diversion</label></li>
+                            <li id="mTransporte"><span class="icon-bus"></span><label id="txtTransporte" class="smAccion">Transporte</label></li>
+                            <li id="mDeporte"><span class="icon-futbol-o"></span><label id="txtDeporte" class="smAccion">Deporte</label></li>
+                            <li id="mEspectaculo"><span class="icon-calendar"></span><label id="txtEspectaculo" class="smAccion">Espectaculo y negocio</label></li>
+                            <li id="mAsistencia"><span class="icon-ambulance"></span><label id="txtAsistencia" class="smAccion">Servicios asistenciales</label></li>
                         </ul>
                     </div>
                 </div>

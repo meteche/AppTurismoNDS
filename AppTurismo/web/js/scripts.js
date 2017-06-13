@@ -250,6 +250,27 @@ function cargarScriptsSitiosTuristicos(){
     var btnLogin = document.getElementById('btn-login');
     btnLogin.onclick = function(){login(1);};
     
+    var menuHospedaje = document.getElementById('mHospejade');
+    menuHospedaje.onclick = function(){buscarEmpresas($("#txtHospedaje").text());};
+    
+    var menuRestaurantes = document.getElementById('mRestaurantes');
+    menuRestaurantes.onclick = function(){buscarEmpresas($("#txtRestaurantes").text());};
+    
+    var menuOcio = document.getElementById('mOcio');
+    menuOcio.onclick = function(){buscarEmpresas($("#txtOcio").text());};
+    
+    var menuTransporte = document.getElementById('mTransporte');
+    menuTransporte.onclick = function(){buscarEmpresas($("#txtTransporte").text());};
+    
+    var menuDeporte = document.getElementById('mDeporte');
+    menuDeporte.onclick = function(){buscarEmpresas($("#txtDeporte").text());};
+    
+    var menuEspectaculo = document.getElementById('mEspectaculo');
+    menuEspectaculo.onclick = function(){buscarEmpresas($("#txtEspectaculo").text());};
+    
+    var menuAsistencia = document.getElementById('mAsistencia');
+    menuAsistencia.onclick = function(){buscarEmpresas($("#txtAsistencia").text());};
+    
     //ajustarAltoDiv();
 }
 
@@ -651,6 +672,79 @@ function cargaTablaServicios(mensaje){
         tbody.setAttribute("id","contFilas");
     }
     tabla.appendChild(tbody);
+}
+
+function cargarServicios(mensaje, empresa, municipio){
+    
+    $("#contenedorST").remove();
+    var contenedor = document.getElementById('container');
+    var contenedorST = document.createElement('div');
+    var tituloEmpresa = document.createElement('h1');
+    var tituloMunicipio = document.createElement('em');
+    contenedorST.setAttribute('id','contenedorST');
+    contenedorST.setAttribute('class','contenedor-busquedas');
+    tituloEmpresa.innerHTML = empresa+": ";
+    tituloMunicipio.innerHTML = municipio;
+    tituloMunicipio.setAttribute('id','tituloMS');
+    tituloEmpresa.appendChild(tituloMunicipio);
+    contenedorST.appendChild(tituloEmpresa);
+    
+    if(mensaje.indexOf('sinRespuesta')>-1){
+        var tarjetaST = document.createElement('div');
+        tarjetaST.innerHTML = "No exiten empresas relacionadas a <em>"+empresa+"</em> en este municipio.";
+        tarjetaST.setAttribute("class","tarjeta margen-top centrarContenido");
+        contenedorST.appendChild(tarjetaST);
+        contenedor.appendChild(contenedorST);
+    }else{
+        var losDatos = mensaje.split("/");
+        for(var i=0; i<(losDatos.length - 1); i++){
+
+            var datos = losDatos[i].split("&");
+
+            var tarjetaST = document.createElement('div');
+            var foto = document.createElement('div');
+            var descTarjeta = document.createElement('div');
+            var descEmpresa = document.createElement('div');
+            var tituloEmpresa = document.createElement('div');
+            var precio = document.createElement('div');
+            var irUrl = document.createElement('div');
+            var imagen = document.createElement('img');
+            var tituloDesc = document.createElement('h3');
+            var descripcionDesc = document.createElement('div');
+
+            imagen.setAttribute("src","imagenesBD/"+datos[0]);
+            foto.appendChild(imagen);
+            foto.setAttribute("id","foto");
+            foto.setAttribute("class","foto");
+            tituloDesc.setAttribute("class","tituloDesc");
+            tituloDesc.innerHTML = datos[1];
+            descripcionDesc.setAttribute("class","descripcionDesc");
+            descripcionDesc.innerHTML = datos[2];
+            descTarjeta.appendChild(tituloDesc);
+            descTarjeta.appendChild(descripcionDesc);
+            descTarjeta.setAttribute("id","descTarjeta");
+            descTarjeta.setAttribute("class","descTarjeta");
+            descEmpresa.setAttribute('class', 'centrar2');
+            tituloEmpresa.innerHTML = datos[5];
+            precio.innerHTML = datos[3];
+            irUrl.innerHTML = datos[4];
+            descEmpresa.appendChild(tituloEmpresa);
+            descEmpresa.appendChild(precio);
+            descEmpresa.appendChild(irUrl);
+            tarjetaST.appendChild(foto);
+            tarjetaST.appendChild(descTarjeta);
+            tarjetaST.appendChild(descEmpresa);
+            tarjetaST.setAttribute("id","tarjetaST");
+            if(datos[1].indexOf("1 campo no valido")>-1){
+                tarjetaST.setAttribute("class","tarjeta margen-top ocultar");
+            }else{
+                tarjetaST.setAttribute("class","tarjeta margen-top");
+            }
+            contenedorST.appendChild(tarjetaST);
+        }
+        contenedor.appendChild(contenedorST);
+        ajustarAltoDiv();
+    }
 }
 
 //FIN - funciones que permiten la interaccion del sitio
@@ -1623,6 +1717,33 @@ function cargarTablaServicios(){
     xhttp.open("POST", "../back/procesar.jsp", true);
     xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     var queryString = "correo=" + (correo) + "&option=" + ("consultarServicios") + "&nocache=" + Math.random();
+    xhttp.send(queryString);
+}
+
+function buscarEmpresas(empresa){
+    var municipio = (window.location.search).split("?");
+    
+    $("body").css({'cursor':'wait'});
+    if (window.XMLHttpRequest) {  
+    // Navegadores que siguen los estándares
+        xhttp = new XMLHttpRequest();
+    }
+    else if (window.ActiveXObject) {  // Navegadores obsoletos
+        xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    
+    xhttp.onreadystatechange = function () {
+        if (xhttp.readyState == READY_STATE_COMPLETE && xhttp.status == OK) {
+            var mensaje = xhttp.responseText;
+            
+            cargarServicios(mensaje, empresa, municipio[1]);
+//            escucharAccionOpcionesTablaServicios();
+            $("body").css({'cursor':'default'});
+        }
+    }
+    xhttp.open("POST", "back/procesar.jsp", true);
+    xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    var queryString = "empresa=" + (empresa) + "&municipio=" + (municipio[1]) + "&option=" + ("consultarServiciosPorTipoEmpresaMunicipio") + "&nocache=" + Math.random();
     xhttp.send(queryString);
 }
 

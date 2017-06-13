@@ -86,10 +86,7 @@
                                     <option>Ocio y diversion</option>
                                     <option>Transporte</option>
                                     <option>Deporte</option>
-                                    <option>Naturaleza</option>
-                                    <option>Cultura</option>
                                     <option>Espectaculo y negocio</option>
-                                    <option>Espacios religiosos</option>
                                     <option>Servicios asistenciales</option>
                                 </select>
                             </div>

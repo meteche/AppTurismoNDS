@@ -149,6 +149,18 @@
                                                                                 rta = Controlador.eliminarServicio(correo, nombre);
                                                                                 System.out.println(rta);
                                                                                 out.print(rta);
+                                                                            }else{
+                                                                                if (request.getParameter("option").equals("consultarServiciosPorTipoEmpresaMunicipio")) {
+                                                                                    String empresa = request.getParameter("empresa");
+                                                                                    String municipio = request.getParameter("municipio");
+                                                                                    System.out.println(empresa+"="+municipio);
+                                                                                    rta = Controlador.consultarServicioPorEmpresaMunicipio(empresa, municipio);
+                                                                                    if(rta.equals("")){
+                                                                                        rta = "sinRespuesta";
+                                                                                    }
+                                                                                    System.out.println(rta);
+                                                                                    out.print(rta);
+                                                                                }
                                                                             }
                                                                         }
                                                                     }

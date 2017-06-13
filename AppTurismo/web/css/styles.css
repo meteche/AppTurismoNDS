@@ -448,6 +448,10 @@ legend{
     padding: 10px;
 }
 
+.centrar2{
+    text-align: center;
+}
+
 @media screen and (min-width: 480px){
     .input2 input{
         width: 45%;

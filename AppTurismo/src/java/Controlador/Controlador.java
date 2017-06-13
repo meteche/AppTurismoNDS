@@ -657,4 +657,17 @@ public class Controlador {
         this.desconectar();
         return mensaje;
     }
+    
+    public String consultarServicioPorEmpresaMunicipio(String tipoEmp, String municipio){
+        Empresa em = new Empresa();
+        
+        em.setTipoEmpresa(tipoEmp);
+        em.setMunicipio(municipio);
+        this.conectar();
+
+        ServicioDao sd = new ServicioDao(this.co);
+        String mensaje = sd.consultarServicioPorEmpresaMunicipio(em);
+        this.desconectar();
+        return mensaje ;
+    }
 }
