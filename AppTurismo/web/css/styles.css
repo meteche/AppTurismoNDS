@@ -357,6 +357,7 @@ header{
 
 .colTransFuerte{
     background: rgba(4, 0, 0, 0.82) !important;
+    //background: rgba(88, 111, 178, 1) !important;
 }
 
 .muniPrincippal, .muniOpcion{

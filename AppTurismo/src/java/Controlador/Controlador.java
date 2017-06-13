@@ -9,11 +9,13 @@ import Modelo.Conexion;
 import Modelo.dao.CuentaDao;
 import Modelo.dao.EmpresaDao;
 import Modelo.dao.MunicipioDao;
+import Modelo.dao.ServicioDao;
 import Modelo.dao.SitioTuristicoDao;
 import Modelo.dao.UsuarioDao;
 import Modelo.dto.Cuenta;
 import Modelo.dto.Empresa;
 import Modelo.dto.Municipio;
+import Modelo.dto.Servicio;
 import Modelo.dto.SitioTuristico;
 import Modelo.dto.Usuario;
 import java.sql.Connection;
@@ -95,12 +97,21 @@ public class Controlador {
         
         if(tipoCuenta.equals("Empresa")){
             Empresa em = new Empresa();
+            Servicio s = new Servicio();
             
+            s.setCorreo(correo);
+            s.setDescripcion("1");
+            s.setNombre("1 campo no valido");
+            s.setPrecio(1);
+            s.setUrl("1");
             em.setCorreo(correo);
             em.setTipoEmpresa(tipoEmpresa);
             
             EmpresaDao emd = new EmpresaDao(this.co);
             mensaje3 = emd.agregarEmpresa(em);
+            
+            ServicioDao sd = new ServicioDao(this.co);
+            String mensaje4 = sd.agregarServicio(s);
         }else{
             
         }
@@ -501,6 +512,138 @@ public class Controlador {
             try {
                 co.rollback();
                 mensaje = "error";
+            } catch (SQLException ex) {
+                Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            try {
+                co.commit();
+            } catch (SQLException ex) {
+                Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        this.desconectar();
+        return mensaje;
+    }
+    
+    public String agregarServicio(String correo, String nombre, int precio, String descripcion, String url, String imagen) {
+        Servicio s = new Servicio();
+        
+        s.setCorreo(correo);
+        s.setNombre(nombre);
+        s.setPrecio(precio);
+        s.setDescripcion(descripcion);
+        s.setUrl(url);
+        s.setImagen(imagen);
+        
+        this.conectar();
+        try {
+            this.co.setAutoCommit(false);
+        } catch (SQLException ex) {
+            Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        ServicioDao sd = new ServicioDao(this.co);
+        String mensaje = sd.agregarServicio(s);
+
+        if (mensaje.indexOf("ERROR")>-1) {
+            try {
+                co.rollback();
+            } catch (SQLException ex) {
+                Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            try {
+                co.commit();
+            } catch (SQLException ex) {
+                Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        this.desconectar();
+        return mensaje;
+    }
+    
+    public String consultarServiciosPorID(String correo){
+        Servicio s = new Servicio();
+        
+        s.setCorreo(correo);
+        this.conectar();
+
+        ServicioDao sd = new ServicioDao(this.co);
+        String mensaje = sd.consultarServiciosPorID(s);
+        this.desconectar();
+        return mensaje ;
+    }
+    
+    public String consultarServicioPorID(String correo, String nombre){
+        Servicio s = new Servicio();
+        
+        s.setCorreo(correo);
+        s.setNombre(nombre);
+        this.conectar();
+
+        ServicioDao sd = new ServicioDao(this.co);
+        String mensaje = sd.consultarServicioPorID(s);
+        this.desconectar();
+        return mensaje ;
+    }
+    
+    public String modificarServicio(String correo, String nombre, String nombreSVer, int precio, String descripcion, String url, String imagen) {
+        Servicio s = new Servicio();
+        Servicio sV = new Servicio();
+        
+        s.setCorreo(correo);
+        s.setNombre(nombre);
+        s.setPrecio(precio);
+        s.setDescripcion(descripcion);
+        s.setUrl(url);
+        s.setImagen(imagen);
+        sV.setNombre(nombre);
+        
+        this.conectar();
+        try {
+            this.co.setAutoCommit(false);
+        } catch (SQLException ex) {
+            Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        ServicioDao sd = new ServicioDao(this.co);
+        String mensaje = sd.modificarServicio(s, sV);
+
+        if (mensaje.indexOf("ERROR")>-1) {
+            try {
+                co.rollback();
+            } catch (SQLException ex) {
+                Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            try {
+                co.commit();
+            } catch (SQLException ex) {
+                Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        this.desconectar();
+        return mensaje;
+    }
+    
+    public String eliminarServicio(String correo, String nombre) {
+        Servicio s = new Servicio();
+        
+        s.setCorreo(correo);
+        s.setNombre(nombre);
+        
+        this.conectar();
+        try {
+            this.co.setAutoCommit(false);
+        } catch (SQLException ex) {
+            Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        ServicioDao sd = new ServicioDao(this.co);
+        String mensaje = sd.eliminarServicio(s);
+
+        if (mensaje.equals("error")) {
+            try {
+                co.rollback();
+                mensaje = "Ha ocurrido un error a la hora de eliminar el servicio.";
             } catch (SQLException ex) {
                 Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
             }

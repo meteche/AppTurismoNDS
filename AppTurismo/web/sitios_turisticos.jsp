@@ -104,10 +104,7 @@
                             <li><span class="icon-child"></span><label class="smAccion">Ocio y diversion</label></li>
                             <li><span class="icon-bus"></span><label class="smAccion">Transporte</label></li>
                             <li><span class="icon-futbol-o"></span><label class="smAccion">Deporte</label></li>
-                            <li><span class="icon-squirrel"></span><label class="smAccion">Naturaleza</label></li>
-                            <li><span class="icon-institution"></span><label class="smAccion">Cultura</label></li>
                             <li><span class="icon-calendar"></span><label class="smAccion">Espectaculo y negocio</label></li>
-                            <li><span class="icon-cross"></span><label class="smAccion">Espacios religiosos</label></li>
                             <li><span class="icon-ambulance"></span><label class="smAccion">Servicios asistenciales</label></li>
                         </ul>
                     </div>

@@ -129,6 +129,29 @@
                                                                     }
                                                                     System.out.println(rta);
                                                                     out.print(rta);
+                                                                }else{
+                                                                    if (request.getParameter("option").equals("consultarServicios")) {
+                                                                        String correo = request.getParameter("correo");
+                                                                        rta = Controlador.consultarServiciosPorID(correo);
+                                                                        System.out.println(rta);
+                                                                        out.print(rta);
+                                                                    }else{
+                                                                        if (request.getParameter("option").equals("consultarInfoServicio")) {
+                                                                            String correo = request.getParameter("correo");
+                                                                            String nombre = request.getParameter("nombre");
+                                                                            rta = Controlador.consultarServicioPorID(correo, nombre);
+                                                                            System.out.println(rta);
+                                                                            out.print(rta);
+                                                                        }else{
+                                                                            if (request.getParameter("option").equals("eliminarServicio")) {
+                                                                                String correo = request.getParameter("correo");
+                                                                                String nombre = request.getParameter("nombre");
+                                                                                rta = Controlador.eliminarServicio(correo, nombre);
+                                                                                System.out.println(rta);
+                                                                                out.print(rta);
+                                                                            }
+                                                                        }
+                                                                    }
                                                                 }
                                                             }
                                                         }

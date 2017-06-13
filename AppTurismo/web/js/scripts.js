@@ -74,6 +74,7 @@ function cargarScripts(){
                                 if(servicios >= 0){
                                     cargaScriptsBasicosEmpresaLogueada();
                                     cargarScriptsServicios();
+                                    cargarTablaServicios();
                                 }else{
                                    if(miCuentaEmpresa >= 0){
                                         cargaScriptsBasicosEmpresaLogueada();
@@ -257,6 +258,12 @@ function cargarScriptsServicios(){
     
     var btnCrearServicio = document.getElementById('btn-crearServicio');
     btnCrearServicio.onclick = function(){registrarServicio();};
+    
+    var btnModificarServicio = document.getElementById('btn-modificarServicio');
+    btnModificarServicio.onclick = function(){registrarServicio()};
+    
+    var btnCancelar = document.getElementById('btn-cancelar');
+    btnCancelar.onclick = function(){redirigir("","servicios.jsp")};
 }
 
 function cargarScriptsEmpresa(){
@@ -605,6 +612,45 @@ function cargaST(mensaje){
         contenedorTarjetas.appendChild(tarjetaST);
     }
     ajustarAltoDiv();
+}
+
+function cargaTablaServicios(mensaje){
+    var losDatos = mensaje.split("/");
+    
+    var tabla = document.getElementById('tabla');
+    var tbody = document.createElement('tbody');
+    
+    for(var i=0; i<(losDatos.length - 1); i++){
+        
+        var datos = losDatos[i].split("&");
+        
+        var fila = document.createElement("tr");
+        var Cnombre = document.createElement("td");
+        var Cprecio = document.createElement("td");
+        var Copciones = document.createElement("td");
+        var iconEditar = document.createElement("span"); 
+        var iconEliminar = document.createElement("span"); 
+        
+        Cnombre.innerHTML = datos[1];
+        Cprecio.innerHTML = datos[2];
+        
+        iconEditar.setAttribute("id","iconEdit");
+        iconEditar.setAttribute("class","icon-edit");
+        iconEliminar.setAttribute("id","iconEliminar");
+        iconEliminar.setAttribute("class","icon-trash-o");
+        Copciones.appendChild(iconEditar);
+        Copciones.appendChild(iconEliminar);
+        Copciones.setAttribute("class","opciones");
+        fila.appendChild(Cnombre);
+        fila.appendChild(Cprecio);
+        fila.appendChild(Copciones);
+        if(datos[1].indexOf("no valido")>-1){
+            fila.setAttribute("class","ocultar");
+        }
+        tbody.appendChild(fila);
+        tbody.setAttribute("id","contFilas");
+    }
+    tabla.appendChild(tbody);
 }
 
 //FIN - funciones que permiten la interaccion del sitio
@@ -1277,6 +1323,76 @@ function escucharAccionOpcionesTablaST(){
     });
 }
 
+function escucharAccionOpcionesTablaServicios(){
+    $("body").on("click", "#contFilas #iconEdit", function(event){
+        event.preventDefault();
+        var fila = $(this).parent().parent();
+        var nombre = fila.children("td:eq(0)").text();
+        var correo = document.getElementById('correoEmpresa').value;
+        
+        $("body").css({'cursor':'wait'});
+        if (window.XMLHttpRequest) {  
+        // Navegadores que siguen los estándares
+            xhttp = new XMLHttpRequest();
+        }
+        else if (window.ActiveXObject) {  // Navegadores obsoletos
+            xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+
+        xhttp.onreadystatechange = function () {
+            if (xhttp.readyState == READY_STATE_COMPLETE && xhttp.status == OK) {
+                var mensaje = xhttp.responseText;
+                var datos = mensaje.split("&");
+                
+                $("#nombreS").val(datos[1]);
+                $("#nombreSVer").val(datos[1]);
+                $("#precioS").val(datos[2]);
+                $("#txtDesc").val(datos[3]);
+                $("#urlS").val(datos[4]);
+                $("#img").val(datos[5]);
+                $("#imgCargada").val(datos[5]);
+                $("#accion").val("mr");
+                
+                $("#btn-crearServicio").css({'display':'none'});
+                $("#btn-modificarServicio").css({'display':'block'});
+                $("#btn-cancelar").css({'display':'block'});
+                $("#imgCargada").css({'display':'block'});
+                $("body").css({'cursor':'default'});
+            }
+        }
+        xhttp.open("POST", "../back/procesar.jsp", true);
+        xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        var queryString = "correo=" + (correo) + "&nombre=" + (nombre) + "&option=" + ("consultarInfoServicio") + "&nocache=" + Math.random();
+        xhttp.send(queryString);
+    });
+    $("body").on("click", "#contFilas #iconEliminar", function(event){
+        event.preventDefault();
+        var fila = $(this).parent().parent();
+        var nombre = fila.children("td:eq(0)").text();
+        var correo = document.getElementById('correoEmpresa').value;
+        
+        $("body").css({'cursor':'wait'});
+        if (window.XMLHttpRequest) {  
+        // Navegadores que siguen los estándares
+            xhttp = new XMLHttpRequest();
+        }
+        else if (window.ActiveXObject) {  // Navegadores obsoletos
+            xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+
+        xhttp.onreadystatechange = function () {
+            if (xhttp.readyState == READY_STATE_COMPLETE && xhttp.status == OK) {
+                var mensaje = xhttp.responseText;
+                window.location = "servicios.jsp";
+            }
+        }
+        xhttp.open("POST", "../back/procesar.jsp", true);
+        xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        var queryString = "correo=" + (correo) + "&nombre=" + (nombre) + "&option=" + ("eliminarServicio") + "&nocache=" + Math.random();
+        xhttp.send(queryString);
+    });
+}
+
 function buscarPorMunicipio(){
     var municipio = document.getElementById('selMunicipio').value;
     $("body").css({'cursor':'wait'});
@@ -1482,6 +1598,32 @@ function actualizarInfoEmpresa(){
             }
         }
     });
+}
+
+function cargarTablaServicios(){
+    var correo = document.getElementById('correoEmpresa').value;
+    
+    $("body").css({'cursor':'wait'});
+    if (window.XMLHttpRequest) {  
+    // Navegadores que siguen los estándares
+        xhttp = new XMLHttpRequest();
+    }
+    else if (window.ActiveXObject) {  // Navegadores obsoletos
+        xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    
+    xhttp.onreadystatechange = function () {
+        if (xhttp.readyState == READY_STATE_COMPLETE && xhttp.status == OK) {
+            var mensaje = xhttp.responseText;
+            cargaTablaServicios(mensaje);
+            escucharAccionOpcionesTablaServicios();
+            $("body").css({'cursor':'default'});
+        }
+    }
+    xhttp.open("POST", "../back/procesar.jsp", true);
+    xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    var queryString = "correo=" + (correo) + "&option=" + ("consultarServicios") + "&nocache=" + Math.random();
+    xhttp.send(queryString);
 }
 
 //FIN - metodos que interactuan con la base de datos

@@ -67,7 +67,7 @@
                     <div class="muniPrincippal">
                         <div>
                             <div>
-                                <h1>Servicio</h1>
+                                <h1>Servicios</h1>
                             </div>
                         </div>
                         <div class="margen-top">
@@ -95,6 +95,7 @@
                             </div>
                             <p id="msgEmergenteS" class="msgEmergente"></p>
                             <div  class="input">
+                                <input id="nombreSVer" name="nombreSVer" class="ocultar" type="text" placeholder="Nombre">
                                 <input id="nombreS" name="nombreS" type="text" placeholder="Nombre">
                             </div>
                             <p id="msgEmergentePrecio" class="msgEmergente"></p>
@@ -115,7 +116,7 @@
                             </div>
                             <div  class="input">
                                 <input id="img" name="img" class="ocultar" type="text" placeholder="Imagen">
-                                <input id="imgCargada" name="imgCargada" class="ocultar" type="text">
+                                <input id="imgCargada" name="imgCargada" class="ocultar" type="text" disabled>
                             </div>
                             <div  class="inputBtn centrar">
                                 <input id="btn-crearServicio" class="btn-primario" type="submit" value="Crear">

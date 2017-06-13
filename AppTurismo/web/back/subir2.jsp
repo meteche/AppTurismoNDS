@@ -19,7 +19,8 @@
     String opcion = null;
     String correoVer = null;
     String nombreS = null;
-    String precio = null;
+    String nombreSVer = null;
+    int precio = 0;
     String descripcion = null;
     String url = null;
     String imagen = null;
@@ -42,7 +43,8 @@
                      */
                     correoVer = mrequest.getParameter("correoEmpresa");
                     nombreS = mrequest.getParameter("nombreS");
-                    precio = mrequest.getParameter("precioS");
+                    nombreSVer = mrequest.getParameter("nombreSVer");
+                    precio = Integer.parseInt(mrequest.getParameter("precioS"));
                     descripcion = mrequest.getParameter("txtDesc");
                     url = mrequest.getParameter("urlS");
                     opcion = mrequest.getParameter("accion");
@@ -95,12 +97,40 @@
                 System.out.println("Error en lo primero: "+exc.getMessage());
             }
     
-    String[] consultarEmpresa = (Controlador.consultarEmpresaPorID(correoVer)).split("-");
+    String[] consultarEmpresa = (Controlador.consultarEmpresaPorID(correoVer)).split("&");
     if(consultarEmpresa[1].equals("null")){
         HttpSession sesion = request.getSession();
         sesion.setAttribute("msgErrorSubir", "Antes de registrar un servicio es necesario que complete el registro de los datos de su empresa. Por favor ingresa a al menu 'Mi Cuenta' y complete el formulario.");
         response.sendRedirect("../empresa/servicios.jsp");
     }else{
-        out.print("registra");
+        //out.print(correoVer+"/"+nombreS+"/"+precio+"/"+descripcion+"/"+url+"/"+imagen);
+        if(opcion.equals("cr")){
+            String rta = "";
+            rta = Controlador.agregarServicio(correoVer, nombreS, precio, descripcion, url, imagen);
+            if(rta.equals("exito")){
+
+            }else{
+                if(rta.indexOf("Duplicate")>-1){
+                    HttpSession sesion = request.getSession();
+                    sesion.setAttribute("msgErrorSubir", "El servicio ya está registrado.");
+                }else{
+                    HttpSession sesion = request.getSession();
+                    sesion.setAttribute("msgErrorSubir", "Ha ocurrido un error a la hora de registrar el servicio.");
+                }
+            }
+        }else{
+            String rta = "";
+            if(file.getFileName() == null){
+                imagen = mrequest.getParameter("img");
+            }
+            rta = Controlador.modificarServicio(correoVer, nombreS, nombreSVer, precio, descripcion, url, imagen);
+            if(rta.equals("exito")){
+
+            }else{
+                HttpSession sesion = request.getSession();
+                sesion.setAttribute("msgErrorSubir", rta);
+            }
+        }
+        response.sendRedirect("../empresa/servicios.jsp");
     }
 %>
